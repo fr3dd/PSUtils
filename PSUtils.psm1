@@ -3,7 +3,7 @@
 # TITLE: PSUtils PowerShell Module
 # DESCRIPTION: Provides a set of useful utilities
 # AUTHOR: fr3dd
-# VERSION: 1.0
+# VERSION: 1.1
 # NOTES: Import-Module -Name PSUtils
 #
 #Requires -Version 5.1
@@ -165,9 +165,7 @@ function Add-ADDSMultivalueAttribute {
             } else {
                 Write-Warning -Message ( "The following is not a proper distinguished name value: {0}" -f $DistinguishedName );
             }
-        }
-        catch {
-        } # Throw away the error because it is false anyway
+        } catch { } # Throw away the error because it is false anyway
     }
 }
 
@@ -470,9 +468,7 @@ function Clear-ADDSAttribute {
             } else {
                 Write-Warning -Message ( "The following is not a proper distinguished name value: {0}" -f $DistinguishedName );
             }
-        }
-        catch {
-        } # Throw away the error because it is false anyway
+        } catch { } # Throw away the error because it is false anyway
     }
 }
 
@@ -2553,8 +2549,7 @@ function Get-ADDSUser {
             } else {
                 Write-Warning -Message ( "Unable to connect to server using the following bind string ({0})" -f $bindString );
             }
-        }
-        catch {  } # Throw away the error because it is false anyway
+        } catch {  } # Throw away the error because it is false anyway
 
         return $output;
     }
@@ -3132,9 +3127,7 @@ function Set-ADDSAttribute {
             } else {
                 Write-Warning -Message ( "The following is not a proper distinguished name value: {0}" -f $DistinguishedName );
             }
-        }
-        catch {
-        } # Throw away the error because it is false anyway
+        } catch { } # Throw away the error because it is false anyway
     }
 }
 
@@ -3975,13 +3968,10 @@ function ConvertFrom-GuidToImmutableID {
     Write-Verbose -Message 'FUNCTION: ConvertFrom-GuidToImmutableID';
     Write-Verbose -Message ( " -Value = {0}" -f $Value );
 
-    try
-    {
+    try {
         $objectGuid = [Guid] $Value;
         $immutableID = [Convert]::ToBase64String( $objectGuid.ToByteArray() );
-    }
-    catch
-    {
+    } catch {
         $immutableID = '';
     }
 
@@ -4033,6 +4023,24 @@ function ConvertFrom-FileToBase64String {
     return $retValue;
 }
 
+<#
+.SYNOPSIS
+    This is a simple import function that pulls in a javascript object notation formatted string and returns an object.
+.DESCRIPTION
+
+.INPUTS
+    None.
+.OUTPUTS
+    This cmdlet returns an object-based representation of the JSON data.
+.EXAMPLE
+    $stringWithJsonData = '{"FirstName":"John","LastName":"Doe"}'
+    $jsonObject = ConvertFrom-JsonString -Value $stringWithJsonData;
+.NOTES
+    Author: fr3dd
+    Version: 1.0.0
+.LINK
+    https://github.com/fr3dd/PSUtils.git
+#>
 function ConvertFrom-JsonString {
     Param
     (
@@ -4048,8 +4056,7 @@ function ConvertFrom-JsonString {
             $jsonData = $json.Deserialize( $Value, [Object] );
         } catch {
             Write-Warning 'Failed to deserialize the JSON data';
-        }
-        finally {
+        } finally {
             if ( $null -ne $json ) {
                 $json = $null;
             }
@@ -5328,6 +5335,23 @@ function Start-ParallelTasks {
     $RunspacePool.Dispose();
 }
 
+<#
+.SYNOPSIS
+    This is a simple expression check to verify that a string is a properly formatted GUID.
+.DESCRIPTION
+
+.INPUTS
+    None.
+.OUTPUTS
+    This cmdlet returns a boolean value indicating appropriate GUID format.
+.EXAMPLE
+    if ( Test-IsAGUID ) { Write-Warning -Message 'Do GUID stuff' } else { Write-Warning -Message 'No GUID stuff' }
+.NOTES
+    Author: fr3dd
+    Version: 1.0.0
+.LINK
+    https://github.com/fr3dd/PSUtils.git
+#>
 function Test-IsAGUID {
     [CmdletBinding()]
     Param
@@ -5460,6 +5484,23 @@ function Test-IsHotFixInstalled {
     }
 }
 
+<#
+.SYNOPSIS
+    Checks to see if the current user is a local administrator on the current machine.
+.DESCRIPTION
+
+.INPUTS
+    None.
+.OUTPUTS
+    This cmdlet returns a boolean value indicating local administrator status.
+.EXAMPLE
+    if ( Test-IsLocalAdmin ) { Write-Warning -Message 'Do admin stuff' } else { Write-Warning -Message 'No admin stuff' }
+.NOTES
+    Author: fr3dd
+    Version: 1.0.0
+.LINK
+    https://github.com/fr3dd/PSUtils.git
+#>
 function Test-IsLocalAdmin {
     if ( ( [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent() ).IsInRole( [Security.Principal.WindowsBuiltInRole]::Administrator ) ) {
         return $true;

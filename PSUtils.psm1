@@ -1561,6 +1561,7 @@ function Get-ADDSComputer {
                         $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
                         $progressStatus = $searchResult.Path;
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+                        $progressCounter++;
 
                         $template = [ordered] @{};
 
@@ -1744,6 +1745,7 @@ function Get-ADDSContact {
                         $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
                         $progressStatus = $searchResult.Path;
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+                        $progressCounter++;
 
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
@@ -1902,6 +1904,7 @@ function Get-ADDSForeignSecurityPrincipal {
                         $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
                         $progressStatus = $searchResult.Path;
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+                        $progressCounter++;
 
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
@@ -2088,6 +2091,7 @@ function Get-ADDSGroup {
                         $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
                         $progressStatus = $searchResult.Path;
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+                        $progressCounter++;
 
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
@@ -2273,7 +2277,8 @@ function Get-ADDSUser {
                         $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
                         $progressStatus = $searchResult.Path;
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
-
+                        $progressCounter++;
+                        
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                         foreach ( $searchResult in $searchResults ) {

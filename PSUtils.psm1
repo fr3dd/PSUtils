@@ -3,7 +3,7 @@
 # TITLE: PSUtils PowerShell Module
 # DESCRIPTION: Provides a set of useful utilities
 # AUTHOR: fr3dd
-# VERSION: 1.2.020824
+# VERSION: 1.2.020924
 # NOTES: Import-Module -Name PSUtils
 #
 #Requires -Version 5.1
@@ -1434,7 +1434,7 @@ function Get-ADDSAttributeValue {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.2.020824
+    Version: 1.2.020924
 .EXAMPLE
     $adComputers = Get-ADDSComputer;
 
@@ -1549,8 +1549,19 @@ function Get-ADDSComputer {
                 $output = [Collections.ArrayList] @();
 
                 if ( $searchResults.Count -gt 0 ) {
+                    [Int32] $progressCounter = 1;
+                    $activityMessage = 'Get-ADDSComputer...';
+                    $progressOperation = '';
+                    $progressPercentage = 0;
+                    $progressStatus = '';
+
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
+                        $progressPercentage = ( $progressCounter / $searchResults.Count ) * 100;
+                        $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
+                        $progressStatus = $searchResult.Path;
+                        Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+
                         $template = [ordered] @{};
 
                         foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
@@ -1565,6 +1576,7 @@ function Get-ADDSComputer {
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
                     }
+                    Write-Progress -Activity $activityMessage -Completed -ErrorAction SilentlyContinue;
                 }
             } else {
                 Write-Warning -Message ( "Unable to connect to server using the following bind string ({0})" -f $bindString );
@@ -1607,7 +1619,7 @@ function Get-ADDSComputer {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.2.020824
+    Version: 1.2.020924
 .EXAMPLE
     $adContacts = Get-ADDSContact;
 
@@ -1720,8 +1732,19 @@ function Get-ADDSContact {
                 $output = [Collections.ArrayList] @();
 
                 if ( $searchResults.Count -gt 0 ) {
+                    [Int32] $progressCounter = 1;
+                    $activityMessage = 'Get-ADDSContact...';
+                    $progressOperation = '';
+                    $progressPercentage = 0;
+                    $progressStatus = '';
+
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
+                        $progressPercentage = ( $progressCounter / $searchResults.Count ) * 100;
+                        $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
+                        $progressStatus = $searchResult.Path;
+                        Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                         foreach ( $searchResult in $searchResults ) {
@@ -1740,6 +1763,7 @@ function Get-ADDSContact {
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
                     }
+                    Write-Progress -Activity $activityMessage -Completed -ErrorAction SilentlyContinue;
                 }
             } else {
                 Write-Warning -Message ( "Unable to connect to server using the following bind string ({0})" -f $bindString );
@@ -1774,7 +1798,7 @@ function Get-ADDSContact {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.2.020824
+    Version: 1.2.020924
 .EXAMPLE
     $adForeignSecurityPrincipals = Get-ADDSForeignSecurityPrincipal;
 
@@ -1866,8 +1890,19 @@ function Get-ADDSForeignSecurityPrincipal {
                 $output = [Collections.ArrayList] @();
 
                 if ( $searchResults.Count -gt 0 ) {
+                    [Int32] $progressCounter = 1;
+                    $activityMessage = 'Get-ADDSForeignSecurityPrincipal...';
+                    $progressOperation = '';
+                    $progressPercentage = 0;
+                    $progressStatus = '';
+
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
+                        $progressPercentage = ( $progressCounter / $searchResults.Count ) * 100;
+                        $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
+                        $progressStatus = $searchResult.Path;
+                        Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                         foreach ( $searchResult in $searchResults ) {
@@ -1886,6 +1921,7 @@ function Get-ADDSForeignSecurityPrincipal {
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
                     }
+                    Write-Progress -Activity $activityMessage -Completed -ErrorAction SilentlyContinue;
                 }
             } else {
                 Write-Warning -Message ( "Unable to connect to server using the following bind string ({0})" -f $bindString );
@@ -1928,7 +1964,7 @@ function Get-ADDSForeignSecurityPrincipal {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.2.020824
+    Version: 1.2.020924
 .EXAMPLE
     $adGroups = Get-ADDSGroup;
 
@@ -2040,8 +2076,19 @@ function Get-ADDSGroup {
                 $output = [Collections.ArrayList] @();
 
                 if ( $searchResults.Count -gt 0 ) {
+                    [Int32] $progressCounter = 1;
+                    $activityMessage = 'Get-ADDSGroup...';
+                    $progressOperation = '';
+                    $progressPercentage = 0;
+                    $progressStatus = '';
+
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
+                        $progressPercentage = ( $progressCounter / $searchResults.Count ) * 100;
+                        $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
+                        $progressStatus = $searchResult.Path;
+                        Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                         foreach ( $searchResult in $searchResults ) {
@@ -2056,10 +2103,10 @@ function Get-ADDSGroup {
                             [Void] $output.Add( $template );
                         }
                     }
-
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
                     }
+                    Write-Progress -Activity $activityMessage -Completed -ErrorAction SilentlyContinue;
                 }
             } else {
                 Write-Warning -Message ( "Unable to connect to server using the following bind string ({0})" -f $bindString );
@@ -2101,7 +2148,7 @@ function Get-ADDSGroup {
     This cmdlet returns a boolean value indicating whether an object was located or not.
 .NOTES
     Author: fr3dd
-    Version: 1.2.020824
+    Version: 1.2.020924
 .EXAMPLE
     $adUsers = Get-ADDSUser;
 
@@ -2214,8 +2261,19 @@ function Get-ADDSUser {
                 $output = [Collections.ArrayList] @();
 
                 if ( $searchResults.Count -gt 0 ) {
+                    [Int32] $progressCounter = 1;
+                    $activityMessage = 'Get-ADDSGroup...';
+                    $progressOperation = '';
+                    $progressPercentage = 0;
+                    $progressStatus = '';
+
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
+                        $progressPercentage = ( $progressCounter / $searchResults.Count ) * 100;
+                        $progressOperation = "Collecting object {0} of {1}" -f $progressCounter, $searchResults.Count;
+                        $progressStatus = $searchResult.Path;
+                        Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
+
                         if ( $searchResults.Count -gt 0 ) {
                         Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                         foreach ( $searchResult in $searchResults ) {
@@ -2234,6 +2292,7 @@ function Get-ADDSUser {
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
                     }
+                    Write-Progress -Activity $activityMessage -Completed -ErrorAction SilentlyContinue;
                 }
             } else {
                 Write-Warning -Message ( "Unable to connect to server using the following bind string ({0})" -f $bindString );

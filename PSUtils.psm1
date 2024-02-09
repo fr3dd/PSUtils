@@ -3,7 +3,7 @@
 # TITLE: PSUtils PowerShell Module
 # DESCRIPTION: Provides a set of useful utilities
 # AUTHOR: fr3dd
-# VERSION: 1.1
+# VERSION: 1.2.020824
 # NOTES: Import-Module -Name PSUtils
 #
 #Requires -Version 5.1
@@ -12,6 +12,616 @@
 
 [CmdletBinding()]
 Param()
+
+#region Here Strings
+
+[Object] $Global:attributeDataTypes = [pscustomobject][ordered] @{
+    'accountExpires' = 'IADsLargeInteger'
+    'adminCount' = 'Int32'
+    'adminDescription' = 'SingleValueString'
+    'altRecipient' = 'SingleValueString'
+    'badPasswordTime' = 'IADsLargeInteger'
+    'badPwdCount' = 'Int32'
+    'c' = 'SingleValueString'
+    'canonicalName' = 'SingleValueString'
+    'cn' = 'SingleValueString'
+    'co' = 'SingleValueString'
+    'comment' = 'SingleValueString'
+    'company' = 'SingleValueString'
+    'countryCode' = 'SingleValueString'
+    'department' = 'SingleValueString'
+    'description' = 'SingleValueString'
+    'directReports' = 'MultiValueString'
+    'displayName' = 'SingleValueString'
+    'distinguishedName' = 'SingleValueString'
+    'division' = 'SingleValueString'
+    'dNSHostName' = 'SingleValueString'
+    'driverName' = 'SingleValueString'
+    'driverVersion' = 'Int32'
+    'employeeID' = 'SingleValueString'
+    'employeeNumber' = 'SingleValueString'
+    'employeeType' = 'SingleValueString'
+    'extensionAttribute1' = 'SingleValueString'
+    'extensionAttribute2' = 'SingleValueString'
+    'extensionAttribute3' = 'SingleValueString'
+    'extensionAttribute4' = 'SingleValueString'
+    'extensionAttribute5' = 'SingleValueString'
+    'extensionAttribute6' = 'SingleValueString'
+    'extensionAttribute7' = 'SingleValueString'
+    'extensionAttribute8' = 'SingleValueString'
+    'extensionAttribute9' = 'SingleValueString'
+    'extensionAttribute10' = 'SingleValueString'
+    'extensionAttribute11' = 'SingleValueString'
+    'extensionAttribute12' = 'SingleValueString'
+    'extensionAttribute13' = 'SingleValueString'
+    'extensionAttribute14' = 'SingleValueString'
+    'extensionAttribute15' = 'SingleValueString'
+    'facsimileTelephoneNumber' = 'SingleValueString'
+    'gidNumber' = 'Int32'
+    'givenName' = 'SingleValueString'
+    'gPLink' = 'SingleValueString'
+    'gPOptions' = 'Int32'
+    'groupType' = 'Int32'
+    'homeDirectory' = 'SingleValueString'
+    'homeDrive' = 'SingleValueString'
+    'homeMDB' = 'SingleValueString'
+    'info' = 'SingleValueString'
+    'initials' = 'SingleValueString'
+    'isCriticalSystemObject' = 'Boolean'
+    'keywords' = 'MultiValueString'
+    'l' = 'SingleValueString'
+    'lastLogonTimestamp' = 'IADsLargeInteger'
+    'legacyExchangeDN' = 'SingleValueString'
+    'lockoutTime' = 'IADsLargeInteger'
+    'loginShell' = 'SingleValueString'
+    'logonCount' = 'Int32'
+    'mail' = 'SingleValueString'
+    'mailNickname' = 'SingleValueString'
+    'managedBy' = 'SingleValueString'
+    'manager' = 'SingleValueString'
+    'mAPIRecipient' = 'Boolean'
+    'mDBOverQuotaLimit' = 'Int32'
+    'mDBStorageQuota' = 'Int32'
+    'mDBUseDefaults' = 'Boolean'
+    'member' = 'MultiValueString'
+    'memberOf' = 'MultiValueString'
+    'memberUID' = 'MultiValueString'
+    'mobile' = 'SingleValueString'
+    'mS-DS-ConsistencyGuid' = 'GUID'
+    'msDS-parentdistname' = 'SingleValueString'
+    'msDS-PrincipalName' = 'SingleValueString'
+    'msDS-preferredDataLocation' = 'SingleValueString'
+    'msExchArchiveGUID' = 'GUID'
+    'msExchArchiveName' = 'SingleValueString'
+    'msExchArchiveStatus' = 'Int32'
+    'msExchAssistantName' = 'SingleValueString'
+    'msExchBypassModerationLink' = 'MultiValueString'
+    'msExchEnableModeration' = 'Boolean'
+    'msExchHideFromAddressLists' = 'Boolean'
+    'msExchHomeServerName' = 'SingleValueString'
+    'msExchLitigationHoldDate' = 'DateTime'
+    'msExchLitigationHoldOwner' = 'SingleValueString'
+    'msExchMailboxGuid' = 'GUID'
+    'msExchMasterAccountHistory' = 'MultiValueStringSid'
+    'msExchMasterAccountSid' = 'StringSID'
+    'msExchOriginatingForest' = 'MultiValueString'
+    'msExchPoliciesExcluded' = 'MultiValueString'
+    'msExchPoliciesIncluded' = 'MultiValueString'
+    'msExchRecipientDisplayType' = 'Int32'
+    'msExchRecipientTypeDetails' = 'IADsLargeInteger'
+    'msExchRemoteRecipientType' = 'IADsLargeInteger'
+    'msExchResourceCapacity' = 'Int32'
+    'msExchResourceDisplay' = 'SingleValueString'
+    'msExchResourceMetaData' = 'MultiValueString'
+    'msExchResourceProperties' = 'MultiValueString'
+    'msExchResourceSearchProperties' = 'MultiValueString'
+    'msExchUsageLocation' = 'SingleValueString'
+    'msExchVersion' = 'IADsLargeInteger'
+    'msExchWhenMailboxCreated' = 'DateTime'
+    'msNPAllowDialin' = 'Boolean'
+    'msRTCSIP-FederationEnabled' = 'Boolean'
+    'msRTCSIP-PrimaryHomeServer' = 'SingleValueString'
+    'msRTCSIP-PrimaryUserAddress' = 'SingleValueString'
+    'msRTCSIP-UserEnabled' = 'Boolean'
+    'msSFU30NisDomain' = 'SingleValueString'
+    'mSSMSCapabilities' = 'SingleValueString'
+    'mSSMSDefaultMP' = 'Boolean'
+    'mSSMSDeviceManagementPoint' = 'Boolean'
+    'mSSMSMPName' = 'SingleValueString'
+    'mSSMSSiteCode' = 'SingleValueString'
+    'mSSMSVersion' = 'Int32'
+    'netbootAllowNewClients' = 'Boolean'
+    'netbootAnswerOnlyValidClients' = 'Boolean'
+    'netbootAnswerRequests' = 'Boolean'
+    'netbootCurrentClientCount' = 'Int32'
+    'netbootLimitClients' = 'Boolean'
+    'netbootMaxClients' = 'Int32'
+    'netbootNewMachineNamingPolicy' = 'MultiValueString'
+    'netbootNewMachineOU' = 'SingleValueString'
+    'netbootServer' = 'SingleValueString'
+    'serviceBindingInformation' = 'MultiValueString'
+    'serviceClassName' = 'SingleValueString'
+    'serviceDNSName' = 'SingleValueString'
+    'serviceDNSNameType' = 'SingleValueString'
+    'o' = 'SingleValueString'
+    'objectGUID' = 'GUID'
+    'objectSid' = 'StringSID'
+    'operatingSystem' = 'SingleValueString'
+    'operatingSystemVersion' = 'SingleValueString'
+    'ou' = 'SingleValueString'
+    'pager' = 'SingleValueString'
+    'physicalDeliveryOfficeName' = 'SingleValueString'
+    'portName' = 'SingleValueString'
+    'postalCode' = 'SingleValueString'
+    'postOfficeBox' = 'SingleValueString'
+    'primaryGroupID' = 'Int32'
+    'primaryGroupToken' = 'Int32'
+    'printCollate' = 'Boolean'
+    'printColor' = 'Boolean'
+    'printDuplexSupported' = 'Boolean'
+    'printerName' = 'SingleValueString'
+    'printKeepPrintJobs' = 'Boolean'
+    'printMediaSupported' = 'MultiValueString'
+    'printMemory' = 'Int32'
+    'printOrientationsSupported' = 'MultiValueString'
+    'printRate' = 'Int32'
+    'printRateUnit' = 'SingleValueString'
+    'printShareName' = 'SingleValueString'
+    'printSpooling' = 'SingleValueString'
+    'printStaplingSupported' = 'Boolean'
+    'priority' = 'Int32'
+    'proxyAddresses' = 'MultiValueString'
+    'publicDelegates' = 'MultiValueString'
+    'pwdLastSet' = 'IADsLargeInteger'
+    'sAMAccountName' = 'SingleValueString'
+    'scriptPath' = 'SingleValueString'
+    'serverName' = 'SingleValueString'
+    'serverReferenceBL' = 'SingleValueString'
+    'servicePrincipalName' = 'MultiValueString'
+    'shadowExpire' = 'Int32'
+    'shadowFlag' = 'Int32'
+    'shadowInactive' = 'Int32'
+    'shadowLastChange' = 'Int32'
+    'shadowMax' = 'Int32'
+    'shadowMin' = 'Int32'
+    'shadowWarning' = 'Int32'
+    'shortServerName' = 'SingleValueString'
+    'sIDHistory' = 'MultiValueStringSid'
+    'sn' = 'SingleValueString'
+    'st' = 'SingleValueString'
+    'streetAddress' = 'SingleValueString'
+    'targetAddress' = 'SingleValueString'
+    'telephoneAssistant' = 'SingleValueString'
+    'telephoneNumber' = 'SingleValueString'
+    'thumbnailPhoto' = 'SingleValueByteArray'
+    'title' = 'SingleValueString'
+    'uid' = 'SingleValueString'
+    'uidNumber' = 'SingleValueString'
+    'uNCName' = 'SingleValueString'
+    'unixHomeDirectory' = 'SingleValueString'
+    'url' = 'SingleValueString'
+    'userAccountControl' = 'Int32'
+    'userCertificate' = 'MultiValueByteArray'
+    'userParameters' = 'TSEncodedBlob'
+    'userPrincipalName' = 'SingleValueString'
+    'userWorkstations' = 'SingleValueString'
+    'uSNChanged' = 'IADsLargeInteger'
+    'whenChanged' = 'DateTime'
+    'whenCreated' = 'DateTime'
+    'wwWWHomePage' = 'SingleValueString'
+}
+
+
+$Global:computerAttributes = [Collections.ArrayList] @(
+    'adminDescription',
+    'canonicalName',
+    'cn',
+    'comment',
+    'description',
+    'distinguishedName',
+    'dNSHostName',
+    'isCriticalSystemObject',
+    'lastLogonTimestamp',
+    'logonCount',
+    'managedBy',
+    'memberOf',
+    'msDS-parentdistname',
+    'msDS-preferredDataLocation',
+    'msDS-PrincipalName',
+    'objectGUID',
+    'objectSid',
+    'operatingSystem',
+    'operatingSystemVersion',
+    'primaryGroupID',
+    'pwdLastSet',
+    'sAMAccountName',
+    'servicePrincipalName',
+    'userAccountControl',
+    'uSNChanged',
+    'whenChanged',
+    'whenCreated'
+)
+
+$Global:contactAttributes = [Collections.ArrayList] @(
+    'adminDescription',
+    'c',
+    'canonicalName',
+    'cn',
+    'comment',
+    'company',
+    'co',
+    'countryCode',
+    'department',
+    'description',
+    'directReports',
+    'displayName',
+    'distinguishedName',
+    'division',
+    'employeeID',
+    'employeeNumber',
+    'employeeType',
+    'extensionAttribute1',
+    'extensionAttribute10',
+    'extensionAttribute11',
+    'extensionAttribute12',
+    'extensionAttribute13',
+    'extensionAttribute14',
+    'extensionAttribute15',
+    'extensionAttribute2',
+    'extensionAttribute3',
+    'extensionAttribute4',
+    'extensionAttribute5',
+    'extensionAttribute6',
+    'extensionAttribute7',
+    'extensionAttribute8',
+    'extensionAttribute9',
+    'facsimileTelephoneNumber',
+    'givenName',
+    'ImmutableId',
+    'info',
+    'initials',
+    'l',
+    'legacyExchangeDN',
+    'mail',
+    'mailNickname',
+    'manager',
+    'mAPIRecipient',
+    'memberOf',
+    'mobile',
+    'mS-DS-ConsistencyGuid',
+    'msDS-parentdistname',
+    'msDS-preferredDataLocation',
+    'msDS-PrincipalName',
+    'msExchAssistantName',
+    'msExchBypassModerationLink',
+    'msExchEnableModeration',
+    'msExchHideFromAddressLists',
+    'msExchLitigationHoldDate',
+    'msExchLitigationHoldOwner',
+    'msExchOriginatingForest',
+    'msExchPoliciesExcluded',
+    'msExchPoliciesIncluded',
+    'msExchRecipientDisplayType',
+    'msExchRecipientTypeDetails',
+    'msExchRemoteRecipientType',
+    'msExchResourceCapacity',
+    'msExchResourceDisplay',
+    'msExchResourceMetaData',
+    'msExchResourceSearchProperties',
+    'msExchUsageLocation',
+    'msExchVersion',
+    'msRTCSIP-FederationEnabled',
+    'msRTCSIP-PrimaryHomeServer',
+    'msRTCSIP-PrimaryUserAddress',
+    'msRTCSIP-UserEnabled',
+    'o',
+    'objectGUID',
+    'pager',
+    'physicalDeliveryOfficeName',
+    'postalCode',
+    'postOfficeBox',
+    'proxyAddresses',
+    'publicDelegates',
+    'sn',
+    'st',
+    'streetAddress',
+    'targetAddress',
+    'telephoneAssistant',
+    'telephoneNumber',
+    'title',
+    'uSNChanged',
+    'whenChanged',
+    'whenCreated'
+)
+
+$Global:foreignSecurityPrincipalAttibutes = [Collections.ArrayList] @(
+    'canonicalName',
+    'cn',
+    'distinguishedName',
+    'msDS-parentdistname',
+    'msDS-preferredDataLocation',
+    'msDS-PrincipalName',
+    'objectGUID',
+    'objectSid',
+    'uSNChanged',
+    'whenChanged',
+    'whenCreated'
+)
+
+$Global:groupAttributes = [Collections.ArrayList] @(
+    'adminCount',
+    'adminDescription',
+    'canonicalName',
+    'cn',
+    'extensionAttribute1',
+    'extensionAttribute10',
+    'extensionAttribute11',
+    'extensionAttribute12',
+    'extensionAttribute13',
+    'extensionAttribute14',
+    'extensionAttribute15',
+    'extensionAttribute2',
+    'extensionAttribute3',
+    'extensionAttribute4',
+    'extensionAttribute5',
+    'extensionAttribute6',
+    'extensionAttribute7',
+    'extensionAttribute8',
+    'extensionAttribute9',
+    'description',
+    'displayName',
+    'distinguishedName',
+    'gidNumber',
+    'groupType',
+    'ImmutableId',
+    'info',
+    'legacyExchangeDN',
+    'mail',
+    'mailNickname',
+    'managedBy',
+    'member',
+    'memberOf',
+    'memberUID',
+    'mS-DS-ConsistencyGuid',
+    'msDS-parentdistname',
+    'msDS-preferredDataLocation',
+    'msDS-PrincipalName',
+    'msExchHideFromAddressLists',
+    'msExchMasterAccountHistory',
+    'msExchRecipientDisplayType',
+    'msSFU30NisDomain',
+    'objectGUID',
+    'objectSid',
+    'primaryGroupToken',
+    'proxyAddresses',
+    'sAMAccountName',
+    'sIDHistory',
+    'targetAddress',
+    'uSNChanged',
+    'whenChanged',
+    'whenCreated'
+)
+
+$Global:ouAttributes = [Collections.ArrayList] @(
+    'adminDescription',
+    'canonicalName',
+    'cn',
+    'description',
+    'distinguishedName',
+    'gPLink',
+    'gPOptions',
+    'managedBy',
+    'objectGUID',
+    'ou',
+    'uSNChanged',
+    'whenChanged',
+    'whenCreated'
+)
+
+$Global:printQueueAttributes = [Collections.ArrayList] @(
+    'canonicalName',
+    'cn',
+    'distinguishedName',
+    'driverName',
+    'driverVersion',
+    'msDS-parentdistname',
+    'objectGUID',
+    'portName',
+    'printCollate',
+    'printColor',
+    'printDuplexSupported',
+    'printerName',
+    'printKeepPrintJobs',
+    'printMediaSupported',
+    'printMemory',
+    'printOrientationsSupported',
+    'printRate',
+    'printRateUnit',
+    'printShareName',
+    'printSpooling',
+    'printStaplingSupported',
+    'priority',
+    'serverName',
+    'shortServerName',
+    'uNCName',
+    'url',
+    'uSNChanged',
+    'whenChanged',
+    'whenCreated'
+)
+
+$Global:serviceConnectionPointAttributes = [Collections.ArrayList] @(
+    'canonicalName',
+    'cn',
+    'distinguishedName',
+    'keywords',
+    'msDS-parentdistname',
+    'mSSMSCapabilities',
+    'mSSMSDefaultMP',
+    'mSSMSDeviceManagementPoint',
+    'mSSMSMPName',
+    'mSSMSSiteCode',
+    'mSSMSVersion',
+    'netbootAllowNewClients',
+    'netbootAnswerOnlyValidClients',
+    'netbootAnswerRequests',
+    'netbootCurrentClientCount',
+    'netbootLimitClients',
+    'netbootMaxClients',
+    'netbootNewMachineNamingPolicy',
+    'netbootNewMachineOU',
+    'netbootServer',
+    'objectGUID',
+    'serviceBindingInformation',
+    'serviceClassName',
+    'serviceDNSName',
+    'serviceDNSNameType',
+    'uSNChanged',
+    'whenChanged',
+    'whenCreated'
+)
+
+$Global:userAttributes = [Collections.ArrayList] @(
+    'accountExpires',
+    'adminCount',
+    'adminDescription',
+    'altRecipient',
+    'badPwdCount',
+    'badPasswordTime',
+    'c',
+    'canonicalName',
+    'cn',
+    'comment',
+    'company',
+    'co',
+    'countryCode',
+    'department',
+    'description',
+    'directReports',
+    'displayName',
+    'distinguishedName',
+    'division',
+    'employeeID',
+    'employeeNumber',
+    'employeeType',
+    'extensionAttribute1',
+    'extensionAttribute10',
+    'extensionAttribute11',
+    'extensionAttribute12',
+    'extensionAttribute13',
+    'extensionAttribute14',
+    'extensionAttribute15',
+    'extensionAttribute2',
+    'extensionAttribute3',
+    'extensionAttribute4',
+    'extensionAttribute5',
+    'extensionAttribute6',
+    'extensionAttribute7',
+    'extensionAttribute8',
+    'extensionAttribute9',
+    'facsimileTelephoneNumber',
+    'gidNumber',
+    'givenName',
+    'homeDirectory',
+    'homeDrive',
+    'homeMDB',
+    'ImmutableId',
+    'info',
+    'initials',
+    'l',
+    'lastLogonTimestamp',
+    'legacyExchangeDN',
+    'lockoutTime',
+    'loginShell',
+    'logonCount',
+    'mail',
+    'mailNickname',
+    'manager',
+    'mAPIRecipient',
+    'mDBOverQuotaLimit',
+    'mDBStorageQuota',
+    'mDBUseDefaults',
+    'memberOf',
+    'mobile',
+    'mS-DS-ConsistencyGuid',
+    'msDS-parentdistname',
+    'msDS-preferredDataLocation',
+    'msDS-PrincipalName',
+    'msExchArchiveGUID',
+    'msExchArchiveName',
+    'msExchArchiveStatus',
+    'msExchAssistantName',
+    'msExchBypassModerationLink',
+    'msExchEnableModeration',
+    'msExchHideFromAddressLists',
+    'msExchHomeServerName',
+    'msExchLitigationHoldDate',
+    'msExchLitigationHoldOwner',
+    'msExchMailboxGuid',
+    'msExchMasterAccountSid',
+    'msExchOriginatingForest',
+    'msExchPoliciesExcluded',
+    'msExchPoliciesIncluded',
+    'msExchRecipientDisplayType',
+    'msExchRecipientTypeDetails',
+    'msExchRemoteRecipientType',
+    'msExchResourceCapacity',
+    'msExchResourceDisplay',
+    'msExchResourceMetaData',
+    'msExchResourceProperties',
+    'msExchResourceSearchProperties',
+    'msExchUsageLocation',
+    'msExchVersion',
+    'msExchWhenMailboxCreated',
+    'msNPAllowDialin',
+    'msRTCSIP-FederationEnabled',
+    'msRTCSIP-PrimaryHomeServer',
+    'msRTCSIP-PrimaryUserAddress',
+    'msRTCSIP-UserEnabled',
+    'msSFU30NisDomain',
+    'o',
+    'objectGUID',
+    'objectSid',
+    'pager',
+    'physicalDeliveryOfficeName',
+    'postalCode',
+    'postOfficeBox',
+    'primaryGroupID',
+    'proxyAddresses',
+    'publicDelegates',
+    'pwdLastSet',
+    'sAMAccountName',
+    'scriptPath',
+    'servicePrincipalName',
+    'shadowExpire',
+    'shadowFlag',
+    'shadowInactive',
+    'shadowLastChange',
+    'shadowMax',
+    'shadowMin',
+    'shadowWarning',
+    'sIDHistory',
+    'sn',
+    'st',
+    'streetAddress',
+    'targetAddress',
+    'telephoneAssistant',
+    'telephoneNumber',
+    'title',
+    'uid',
+    'uidNumber',
+    'unixHomeDirectrory',
+    'userAccountControl',
+    'userParameters',
+    'userPrincipalName',
+    'userWorkstations',
+    'uSNChanged',
+    'wwWWHomePage',
+    'whenChanged',
+    'whenCreated'
+)
+
+#endregion
 
 #region Active Directory Domain Services Cmdlets
 
@@ -44,7 +654,7 @@ Param()
     Version: 1.0.0
 .EXAMPLE
     $testUser = Get-ADDSUser -Identity 'testuser';
-    Add-ADDSMultivalueAttribute -DistinguishedName $testUser.distinguishedName -AttributeName 'proxyAddresses' -AttributeValue 'smtp:jdoe@company.com';
+    Add-ADDSMultivalueAttribute -DistinguishedName $testUser.distinguishedName -Name 'proxyAddresses' -AttributeValue 'smtp:jdoe@company.com';
 
     The preceding example searches for a user called 'testuser' on the Domain Controller named 'DC1' using 
     the credentials stored in $creds. Once that object is returned, the 'smtp:jdoe@company.com' is added
@@ -63,7 +673,7 @@ function Add-ADDSMultivalueAttribute {
         [String] $Server = '',
 
         [Parameter( Position = 2, Mandatory = $true, HelpMessage = 'Enter the attribute name' )]
-        [String] $AttributeName,
+        [String] $Name,
 
         [Parameter( Position = 3, Mandatory = $true, HelpMessage = 'Enter the additional attribute value' )]
         [String] $AttributeValue,
@@ -76,7 +686,7 @@ function Add-ADDSMultivalueAttribute {
         Write-Verbose -Message 'Function: Add-ADDSMultivalueAttribute';
         Write-Verbose -Message ( " -DistinguishedName = {0}" -f $DistinguishedName );
         Write-Verbose -Message ( " -Server = {0}" -f $Server );
-        Write-Verbose -Message ( " -AttributeName = {0}" -f $AttributeName );
+        Write-Verbose -Message ( " -Name = {0}" -f $Name );
         Write-Verbose -Message ( " -AttributeValue = {0}" -f $AttributeValue );
 
         if ( $null -ne $Credential ) {
@@ -111,19 +721,19 @@ function Add-ADDSMultivalueAttribute {
                 if ( $null -ne $de.distinguishedName ) {
                     Write-Verbose -Message 'An object was found at the specified path';
 
-                    if ( $de.Properties.Contains( $AttributeName ) ) {
-                        Write-Verbose -Message ( "The attribute named {0} is present" -f $AttributeName );
+                    if ( $de.Properties.Contains( $Name ) ) {
+                        Write-Verbose -Message ( "The attribute named {0} is present" -f $Name );
 
                         if ( $Script:attributeTypes[ $key ] -eq 'DistinguishedName' ) {
-                            Write-Verbose -Message ( "The attribute named {0} expects a distinguishedName value" -f $AttributeName );
+                            Write-Verbose -Message ( "The attribute named {0} expects a distinguishedName value" -f $Name );
                             if ( [regex]::Match( $AttributeValue, '(?=CN|DC|OU)(.*\n?)(?<=.)' ).Success ) {
                                 Write-Verbose -Message 'Verify that the value does not already exist within the attribute';
-                                if ( $de.Properties[ $AttributeName ].Values.Contains( $AttributeValue ) ) {
+                                if ( $de.Properties[ $Name ].Values.Contains( $AttributeValue ) ) {
                                     Write-Warning -Message ( "The following value is already set on the attribute: {0}" -f $AttributeValue );
                                 } else {
-                                    Write-Verbose -Message ( "Add '{0}' to attribute {1}" -f $AttributeValue, $AttributeName );
+                                    Write-Verbose -Message ( "Add '{0}' to attribute {1}" -f $AttributeValue, $Name );
                                     try {
-                                        $de.Properties[ $AttributeName ].Values.Add( $AttributeValue );
+                                        $de.Properties[ $Name ].Values.Add( $AttributeValue );
                                         $de.CommitChanges();
                                     }
                                     catch {
@@ -135,12 +745,12 @@ function Add-ADDSMultivalueAttribute {
                             }
                         } else {
                             Write-Verbose -Message 'The attribute is assumed to be a string';
-                            if ( $de.Properties[ $AttributeName ].Values.Contains( $AttributeValue ) ) {
+                            if ( $de.Properties[ $Name ].Values.Contains( $AttributeValue ) ) {
                                 Write-Warning -Message ( "The following value is already set on the attribute: {0}" -f $AttributeValue );
                             } else {
-                                Write-Verbose -Message ( "Add '{0}' to attribute {1}" -f $AttributeValue, $AttributeName );
+                                Write-Verbose -Message ( "Add '{0}' to attribute {1}" -f $AttributeValue, $Name );
                                 try {
-                                    $de.Properties[ $AttributeName ].Values.Add( $AttributeValue );
+                                    $de.Properties[ $Name ].Values.Add( $AttributeValue );
                                     $de.CommitChanges();
                                 }
                                 catch {
@@ -149,10 +759,10 @@ function Add-ADDSMultivalueAttribute {
                             }
                         }
                     } else {
-                        Write-Verbose -Message ( "The attribute named '{0}' does not currently have a value" -f $AttributeName );
-                        Write-Verbose -Message ( "Add '{0}' to attribute {1}" -f $AttributeValue, $AttributeName );
+                        Write-Verbose -Message ( "The attribute named '{0}' does not currently have a value" -f $Name );
+                        Write-Verbose -Message ( "Add '{0}' to attribute {1}" -f $AttributeValue, $Name );
                         try {
-                            $de.Properties[ $AttributeName ].Values.Add( $AttributeValue );
+                            $de.Properties[ $Name ].Values.Add( $AttributeValue );
                             $de.CommitChanges();
                         }
                         catch {
@@ -280,7 +890,7 @@ function Add-ADDSPrincipalToLocalGroup {
     Version: 1.0.0
 .EXAMPLE
     $testUser = Get-ADDSUser -Identity 'testuser';
-    Clear-ADDSAttribute -DistinguishedName $testUser.distinguishedName -AttributeName 'adminDescription';
+    Clear-ADDSAttribute -DistinguishedName $testUser.distinguishedName -Name 'adminDescription';
 
     The preceding example searches for a user called 'testuser' on the Domain Controller named 'DC1' using 
     the credentials stored in $creds. Once that object is returned, the 'adminDescription' is cleared.
@@ -298,7 +908,7 @@ function Clear-ADDSAttribute {
         [String] $Server = '',
 
         [Parameter( Position = 2, Mandatory = $true, HelpMessage = 'Enter the attribute name to clear' )]
-        [String] $AttributeName,
+        [String] $Name,
 
         [Parameter( Position = 3, Mandatory = $false, HelpMessage = 'Enter a credential to perform the task' )]
         [Management.Automation.PSCredential] $Credential = $null
@@ -308,7 +918,7 @@ function Clear-ADDSAttribute {
         Write-Verbose -Message 'Function: Clear-ADDSAttribute';
         Write-Verbose -Message ( " -DistinguishedName = {0}" -f $DistinguishedName );
         Write-Verbose -Message ( " -Server = {0}" -f $Server );
-        Write-Verbose -Message ( " -AttributeName = {0}" -f $AttributeName );
+        Write-Verbose -Message ( " -Name = {0}" -f $Name );
 
         if ( $null -ne $Credential ) {
             Write-Verbose -Message ( " -Credential.UserName = {0}" -f $Credential.UserName );
@@ -453,9 +1063,9 @@ function Clear-ADDSAttribute {
                 if ( $null -ne $de.distinguishedName ) {
                     Write-Verbose -Message 'An object was found at the specified path';
 
-                    if ( $de.Properties.Contains( $AttributeName ) ) {
+                    if ( $de.Properties.Contains( $Name ) ) {
                         try {
-                            $de.Properties[ $AttributeName ].Clear();
+                            $de.Properties[ $Name ].Clear();
                             $de.CommitChanges();
                         }
                         catch {
@@ -475,59 +1085,62 @@ function Clear-ADDSAttribute {
 function Get-ADDSAttributeValue {
     Param
     (
-        [String] $AttributeName,
+        [Parameter( Position = 0, Mandatory = $true, HelpMessage = 'Enter the desired attribute name to look for' )]
+        [String] $Name,
 
         [Object] $SearchResult
     )
 
-    if ( $script:attributeTypes.Contains( $AttributeName ) ) {
-        $attributeType = $script:attributeTypes.Item( $AttributeName )
+    if ( $Global:PSUtilsSettings.AttributeDataTypes.$Name ) {
+        $attributeType = $Global:PSUtilsSettings.AttributeDataTypes.$Name;
 
         switch ( $attributeType ) {
             'SingleValueString' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
-                    return $SearchResult.Properties.Item( $AttributeName )[ 0 ];
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
+                    return $SearchResult.Properties.Item( $Name )[ 0 ];
                 } else {
                     return '';
                 }
             } 'DateTime' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
-                    return ( Get-Date -Date $SearchResult.Properties.Item( $AttributeName )[ 0 ] -Format u );
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
+                    return ( Get-Date -Date $SearchResult.Properties.Item( $Name )[ 0 ] -Format u );
                 } else {
                     return '';
                 }
             } 'Int32' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
-                    return [Convert]::ToInt32( $SearchResult.Properties.Item( $AttributeName )[ 0 ] );
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
+                    return [Convert]::ToInt32( $SearchResult.Properties.Item( $Name )[ 0 ] );
                 } else {
                     return 0;
                 }
             } 'IADsLargeInteger' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
-                    switch ( $AttributeName ) {
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
+                    switch ( $Name ) {
                         'accountExpires' {
-                            if ( $SearchResult.Properties.Item( $AttributeName )[ 0 ] -eq '9223372036854775807' ) {
+                            if ( $SearchResult.Properties.Item( $Name )[ 0 ] -eq '9223372036854775807' ) {
                                 return '(never)';
                             } else {
-                                $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $AttributeName )[ 0 ] ).ToString();
+                                $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $Name )[ 0 ] ).ToString();
                                 return ( Get-Date -Date $iADSLargInteger -Format u );
                             }
                         } 'lockoutTime' {
-                            if ( $SearchResult.Properties.Item( $AttributeName )[ 0 ] -eq '0' ) {
+                            if ( $SearchResult.Properties.Item( $Name )[ 0 ] -eq '0' ) {
                                 return '(not locked)';
                             } else {
-                                $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $AttributeName )[ 0 ] ).ToString();
+                                $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $Name )[ 0 ] ).ToString();
                                 return ( Get-Date -Date $iADSLargInteger -Format u );
                             }
                         } 'pwdLastSet' {
-                            if ( $SearchResult.Properties.Item( $AttributeName )[ 0 ] -eq '0' ) {
+                            if ( $SearchResult.Properties.Item( $Name )[ 0 ] -eq '0' ) {
                                 return '(never)';
                             } else {
-                                $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $AttributeName )[ 0 ] ).ToString();
+                                $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $Name )[ 0 ] ).ToString();
                                 return ( Get-Date -Date $iADSLargInteger -Format u );
                             }
+                        } 'uSNChanged' {
+                            return $SearchResult.Properties.usnchanged
                         } default {
-                            $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $AttributeName )[ 0 ] ).ToString();
+                            $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $Name )[ 0 ] ).ToString();
                             return ( Get-Date -Date $iADSLargInteger -Format u );
                         }
                     }
@@ -535,24 +1148,24 @@ function Get-ADDSAttributeValue {
                     return 0;
                 }
             } 'Boolean' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
-                    return [Convert]::ToBoolean( $SearchResult.Properties.Item( $AttributeName )[ 0 ] );
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
+                    return [Convert]::ToBoolean( $SearchResult.Properties.Item( $Name )[ 0 ] );
                 } else {
                     return $false;
                 }
             } 'GUID' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
-                    [Byte[]] $guidBytes = $SearchResult.Properties.Item( $AttributeName )[ 0 ];
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
+                    [Byte[]] $guidBytes = $SearchResult.Properties.Item( $Name )[ 0 ];
                     [Guid] $guidData = New-Object Guid( ,$guidBytes );
                     return $guidData.Guid.ToString();
                 } else {
                     return '';
                 }
             } 'MultiValueString' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
                     $stringCollection = [Collections.ArrayList] @();
 
-                    foreach ( $stringValue in $SearchResult.Properties.Item( $AttributeName ) ) {
+                    foreach ( $stringValue in $SearchResult.Properties.Item( $Name ) ) {
                         [Void] $stringCollection.Add( $stringValue );
                     }
 
@@ -563,18 +1176,18 @@ function Get-ADDSAttributeValue {
                     return @();
                 }
             } 'StringSid' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
-                    [Byte[]] $sidBytes = $SearchResult.Properties.Item( $AttributeName )[ 0 ];
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
+                    [Byte[]] $sidBytes = $SearchResult.Properties.Item( $Name )[ 0 ];
                     [Security.Principal.SecurityIdentifier] $sid = New-Object Security.Principal.SecurityIdentifier( $sidBytes, 0 );
                     return $sid.Value;
                 } else {
                     return '';
                 }
             } 'MultiValueStringSid' {
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
                     $sidStrings = [Collections.ArrayList] @();
 
-                    foreach ( $sidValue in $SearchResult.Properties.Item( $AttributeName ) ) {
+                    foreach ( $sidValue in $SearchResult.Properties.Item( $Name ) ) {
                         [Byte[]] $sidBytes = $sidValue;
                         [Security.Principal.SecurityIdentifier] $sid = New-Object Security.Principal.SecurityIdentifier( $sidValue, 0 );
                         [Void] $sidStrings.Add( $sid.Value );
@@ -605,7 +1218,7 @@ function Get-ADDSAttributeValue {
                     'WorkDirectory' = ''
                 };
 
-                if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
+                if ( $SearchResult.Properties.Contains( $Name ) ) {
                     $adsiObject = [ADSI] $SearchResult.Path;
 
                     $allowLogon = $adsiObject.PSBase.InvokeGet( 'AllowLogon' );
@@ -783,7 +1396,7 @@ function Get-ADDSAttributeValue {
 
     #----------------------------------------------------------------------------------------------------------
     trap {
-        Write-Warning -Message ( "ERROR: AttributeName={0}, Object={1}, Message={2}" -f $AttributeName, $SearchResult.Path, $_.Exception.Message );
+        Write-Warning -Message ( "ERROR: AttributeName={0}, Object={1}, Message={2}" -f $Name, $SearchResult.Path, $_.Exception.Message );
         Continue;
     }
     #----------------------------------------------------------------------------------------------------------
@@ -821,7 +1434,7 @@ function Get-ADDSAttributeValue {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.0.0
+    Version: 1.2.020824
 .EXAMPLE
     $adComputers = Get-ADDSComputer;
 
@@ -875,67 +1488,9 @@ function Get-ADDSComputer {
         Write-Verbose -Message ( " -SearchBase = {0}" -f $SearchBase );
         Write-Verbose -Message ( " -SearchScope = {0}" -f $SearchScope );
 
+        # Initialize settings files
         [String] $bindString = '';
-        [Hashtable] $script:attributeTypes = @{
-            'adminDescription' = 'SingleValueString'
-            'canonicalName' = 'SingleValueString'
-            'cn' = 'SingleValueString'
-            'comment' = 'SingleValueString'
-            'description' = 'SingleValueString'
-            'distinguishedName' = 'SingleValueString'
-            'dNSHostName' = 'SingleValueString'
-            'isCriticalSystemObject' = 'Boolean'
-            'lastLogonTimestamp' = 'IADsLargeInteger'
-            'logonCount' = 'Int32'
-            'managedBy' = 'SingleValueString'
-            'memberOf' = 'MultiValueString'
-            'msDS-parentdistname' = 'SingleValueString'
-            'msDS-PrincipalName' = 'SingleValueString'
-            'objectGUID' = 'GUID'
-            'objectSid' = 'StringSID'
-            'operatingSystem' = 'SingleValueString'
-            'operatingSystemVersion' = 'SingleValueString'
-            'primaryGroupID' = 'Int32'
-            'primaryGroupToken' = 'Int32'
-            'pwdLastSet' = 'IADsLargeInteger'
-            'sAMAccountName' = 'SingleValueString'
-            'serverReferenceBL' = 'SingleValueString'
-            'servicePrincipalName' = 'MultiValueString'
-            'userAccountControl' = 'Int32'
-            'whenChanged' = 'DateTime'
-            'whenCreated' = 'DateTime'
-        }
 
-        $jsonAttributes = [Collections.ArrayList] @(
-            'adminDescription',
-            'comment'
-        )
-
-        $script:isMultiValued = [Collections.ArrayList] @(
-            'memberOf',
-            'servicePrincipalName'
-        );
-
-        $script:isReadOnly = [Collections.ArrayList] @(
-            '_bcObjectType',
-            '_bcID',
-            'canonicalName',
-            'cn',
-            'distinguishedName',
-            'dNSHostName',
-            'isCriticalSystemObject',
-            'lastLogonTimestamp',
-            'logonCount',
-            'objectGUID',
-            'objectSid',
-            'operatingSystem',
-            'operatingSystemVersion',
-            'primaryGroupToken',
-            'pwdLastSet',
-            'serverReferenceBL',
-            'whenChanged',
-            'whenCreated'
-        );
     }
     Process { }
     End {
@@ -968,7 +1523,7 @@ function Get-ADDSComputer {
                 $domainSearcher.SearchScope = $SearchScope;
                 $domainSearcher.PageSize = 1000;
                 $domainSearcher.PropertiesToLoad.Clear();
-                $domainSearcher.PropertiesToLoad.AddRange( $script:attributeTypes.Keys );
+                $domainSearcher.PropertiesToLoad.AddRange( $Global:PSUtilsSettings.ComputerAttributes );
 
                 if ( $LDAPFilter -eq '' ) {
                     if ( $Identity -eq '' ) {
@@ -996,176 +1551,16 @@ function Get-ADDSComputer {
                 if ( $searchResults.Count -gt 0 ) {
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
-                        $operatingSystem = Get-ADDSAttributeValue -AttributeName 'operatingSystem' -SearchResult $searchResult;
-                        if ( $operatingSystem.Contains( '®' ) ) {
-                            $operatingSystem = $operatingSystem.Replace( '®', '' );
-                        }
-                        [Object] $template = [pscustomobject][ordered] @{
-                            '_bcObjectType' = 'adComputer'
-                            '_bcID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'adminDescription' = Get-ADDSAttributeValue -AttributeName 'adminDescription' -SearchResult $searchResult
-                            'canonicalName' = Get-ADDSAttributeValue -AttributeName 'canonicalName' -SearchResult $searchResult
-                            'cn' = Get-ADDSAttributeValue -AttributeName 'cn' -SearchResult $searchResult
-                            'comment' = Get-ADDSAttributeValue -AttributeName 'comment' -SearchResult $searchResult
-                            'description' = Get-ADDSAttributeValue -AttributeName 'description' -SearchResult $searchResult
-                            'distinguishedName' = Get-ADDSAttributeValue -AttributeName 'distinguishedName' -SearchResult $searchResult
-                            'dNSHostName' = Get-ADDSAttributeValue -AttributeName 'dNSHostName' -SearchResult $searchResult
-                            'isCriticalSystemObject' = Get-ADDSAttributeValue -AttributeName 'isCriticalSystemObject' -SearchResult $searchResult
-                            'lastLogonTimestamp' = Get-ADDSAttributeValue -AttributeName 'lastLogonTimestamp' -SearchResult $searchResult
-                            'logonCount' = Get-ADDSAttributeValue -AttributeName 'logonCount' -SearchResult $searchResult
-                            'managedBy' = Get-ADDSAttributeValue -AttributeName 'managedBy' -SearchResult $searchResult
-                            'memberOf' = Get-ADDSAttributeValue -AttributeName 'memberOf' -SearchResult $searchResult
-                            'msDS-parentdistname' = Get-ADDSAttributeValue -AttributeName 'msDS-parentdistname' -SearchResult $searchResult
-                            'msDS-PrincipalName' = Get-ADDSAttributeValue -AttributeName 'msDS-PrincipalName' -SearchResult $searchResult
-                            'objectGUID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'objectSid' = Get-ADDSAttributeValue -AttributeName 'objectSid' -SearchResult $searchResult
-                            'operatingSystem' = $operatingSystem
-                            'operatingSystemVersion' = Get-ADDSAttributeValue -AttributeName 'operatingSystemVersion' -SearchResult $searchResult
-                            'pwdLastSet' = Get-ADDSAttributeValue -AttributeName 'pwdLastSet' -SearchResult $searchResult
-                            'primaryGroupID' = Get-ADDSAttributeValue -AttributeName 'primaryGroupID' -SearchResult $searchResult
-                            'sAMAccountName' = Get-ADDSAttributeValue -AttributeName 'sAMAccountName' -SearchResult $searchResult
-                            'serverReferenceBL' = Get-ADDSAttributeValue -AttributeName 'serverReferenceBL' -SearchResult $searchResult
-                            'servicePrincipalName' = Get-ADDSAttributeValue -AttributeName 'servicePrincipalName' -SearchResult $searchResult
-                            'userAccountControl' = Get-ADDSAttributeValue -AttributeName 'userAccountControl' -SearchResult $searchResult
-                            'whenChanged' = Get-ADDSAttributeValue -AttributeName 'whenChanged' -SearchResult $searchResult
-                            'whenCreated' = Get-ADDSAttributeValue -AttributeName 'whenCreated' -SearchResult $searchResult
+                        $template = [ordered] @{};
+
+                        foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
+                            $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                            $template.Add( $attribute, $attributeValue );
                         }
 
-                        foreach ( $jsonAttribute in $jsonAttributes ) {
-                            if ( $template.$jsonAttribute.StartsWith( '{' ) -and $template.$jsonAttribute.EndsWith( '}' ) ) {
-                                Write-Verbose -Message ( "The following attribute looks like it might have JSON data = {0}" -f $jsonAttribute );
-                                $jsonDataValues = ConvertFrom-JsonString -Value $template.$jsonAttribute;
-
-                                if ( $null -ne $jsonDataValues ) {
-                                    Write-Verbose -Message 'Building a JSON document from the attribute value'
-                                    $customPropertyName = '';
-                                    $customPropertyValue = '';
-
-                                    foreach ( $jsonDataValue in $jsonDataValues.GetEnumerator() ) {
-                                        $customPropertyName = "{0}" -f $jsonDataValue.Key;
-                                        $customPropertyValue = $jsonDataValue.Value;
-                                        Add-Member -InputObject $template -MemberType NoteProperty -Name $customPropertyName -Value $customPropertyValue -ErrorAction SilentlyContinue;
-                                    }
-                                }
-                            }
+                        if ( $template.operatingSystem.Contains( '®' ) ) {
+                            $template.operatingSystem.Replace( '®', '' );
                         }
-
-                        # Add a method to add a value to a multivalue attribute
-                        $template | Add-Member -MemberType ScriptMethod -Name AddMultiValue {
-                            Param(	
-                                [Parameter( Mandatory = $true, HelpMessage = 'Please specify the attribute name.' )]
-                                [String] $Name,
-                                
-                                [Parameter( Mandatory = $false, HelpMessage = 'Please specify the attribute name.' )]
-                                [String] $Value
-                            )
-                            End {
-                                # Declare method objects and variables
-                                $valueCollection = New-Object Collections.ArrayList;
-                                $valueCollection.AddRange( $this.$Name );
-                                # TODO: Take from my IDPortal module and make this work, can just use the Add-ADDSMultiValueAttribute instead
-                                #[Object] $setResult = Set-IDPortalAttribute -AttributeName $Name -AttributeValue $Value -ObjectID $this.ObjectID -ObjectType $this.ObjectType -Remove:$false;
-                            
-                                # Update the object if successful
-                                #if ( $setResult.Result -eq 'Success' ) {
-                                #    [Void] $valueCollection.Add( $Value );
-                                #    $this.$Name = $valueCollection;
-                                #}
-
-                                # Return the method result value
-                                #return $setResult.Result;
-                            } # end End
-                        } -Force;
-
-                        # Add a method to clear an attribute value
-                        $template | Add-Member -MemberType ScriptMethod -Name Clear {
-                            Param(	
-                                [Parameter( Mandatory = $true, HelpMessage = 'Please specify the attribute name.' )]
-                                [String] $Name
-                            )
-                            End {
-                                if ( $script:isReadOnly.Contains( $Name ) ) {
-                                    Write-Warning -Message ( "The following attribute is read-only and cannot be cleared: {0}" -f $Name );
-                                    return 'Failed to clear attribute';
-                                }
-
-                                if ( $script:isMultiValued.Contains( $Name ) ) {
-                                    Write-Warning -Message ( "The following value is multi-valued and must be modified with either AddMultivalue or RemoveMultivalue: {0}" -f $Name );
-                                    return 'Failed to clear attribute';
-                                }
-
-                                "Clearing...$Name"
-                            } # end End
-                        } -Force;
-
-                        # Add a method to calculate if the account is enabled
-                        $template | Add-Member -MemberType ScriptMethod -Name IsDisabled {
-                            Param()
-                            End {
-                                if ( $this.userAccountControl -band 2 ) {
-                                    return $true;
-                                } else {
-                                    return $false;
-                                }
-                            } # end End
-                        } -Force;
-
-                        # Add a method to add a value to a multivalue attribute
-                        $template | Add-Member -MemberType ScriptMethod -Name RemoveMultiValue {
-                            Param(
-                                [Parameter( Mandatory = $true, HelpMessage = 'Please specify the attribute name.' )]
-                                [String] $Name,
-                                
-                                [Parameter( Mandatory = $false, HelpMessage = 'Please specify the attribute name.' )]
-                                [String] $Value
-                            )
-                            End {
-                                # Declare method objects and variables
-                                $valueCollection = New-Object Collections.ArrayList;
-                                $valueCollection.AddRange( $this.$Name );
-                                # TODO: Take from my IDPortal module and make this work
-                                #[Object] $setResult = Set-IDPortalAttribute -AttributeName $Name -AttributeValue $Value -ObjectID $this.ObjectID -ObjectType $this.ObjectType -Remove:$false;
-                            
-                                # Update the object if successful
-                                #if ( $setResult.Result -eq 'Success' ) {
-                                #    [Void] $valueCollection.Add( $Value );
-                                #    $this.$Name = $valueCollection;
-                                #}
-
-                                # Return the method result value
-                                #return $setResult.Result;
-                            } # end End
-                        } -Force;
-
-                        # Add a method to set an attribute value
-                        $template | Add-Member -MemberType ScriptMethod -Name SetAttribute {
-                            Param(	
-                                [Parameter( Mandatory = $true, HelpMessage = 'Please specify the attribute name.' )]
-                                [String] $Name,
-                                
-                                [Parameter( Mandatory = $false, HelpMessage = 'Please specify the attribute name.' )]
-                                [String] $Value
-                            )
-                            End {
-                                if ( $script:isReadOnly.Contains( $Name ) ) {
-                                    Write-Warning -Message ( "The following attribute is read-only and cannot be set: {0}" -f $Name );
-                                    return 'Failed';
-                                }
-
-                                if ( $script:isMultiValued.Contains( $Name ) ) {
-                                    Write-Warning -Message ( "The following attribute is multi-valued and must be modified with either AddMultivalue or RemoveMultivalue: {0}" -f $Name );
-                                    return 'Failed';
-                                }
-                                
-                                if ( $script:attributeTypes.ContainsKey( $Name ) ) {
-                                    "Attempting to set {0} to {1}" -f $Name, $Value;
-                                    $this.$Name;
-                                } else {
-                                    Write-Warning -Message ( "The following attribute is not currently available in this cmdlet: {0}" -f $Name );
-                                }
-
-                            } # end End
-                        } -Force;
                         
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
@@ -1212,7 +1607,7 @@ function Get-ADDSComputer {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.0.0
+    Version: 1.2.020824
 .EXAMPLE
     $adContacts = Get-ADDSContact;
 
@@ -1267,114 +1662,6 @@ function Get-ADDSContact {
         Write-Verbose -Message ( " -SearchScope = {0}" -f $SearchScope );
 
         [String] $bindString = '';
-        [Hashtable] $script:attributeTypes = @{
-            'adminDescription' = 'SingleValueString'
-            'c' = 'SingleValueString'
-            'canonicalName' = 'SingleValueString'
-            'cn' = 'SingleValueString'
-            'co' = 'SingleValueString'
-            'comment' = 'SingleValueString'
-            'company' = 'SingleValueString'
-            'countryCode' = 'SingleValueString'
-            'department' = 'SingleValueString'
-            'description' = 'SingleValueString'
-            'directReports' = 'MultiValueString'
-            'displayName' = 'SingleValueString'
-            'distinguishedName' = 'SingleValueString'
-            'division' = 'SingleValueString'
-            'employeeID' = 'SingleValueString'
-            'employeeNumber' = 'SingleValueString'
-            'employeeType' = 'SingleValueString'
-            'extensionAttribute1' = 'SingleValueString'
-            'extensionAttribute2' = 'SingleValueString'
-            'extensionAttribute3' = 'SingleValueString'
-            'extensionAttribute4' = 'SingleValueString'
-            'extensionAttribute5' = 'SingleValueString'
-            'extensionAttribute6' = 'SingleValueString'
-            'extensionAttribute7' = 'SingleValueString'
-            'extensionAttribute8' = 'SingleValueString'
-            'extensionAttribute9' = 'SingleValueString'
-            'extensionAttribute10' = 'SingleValueString'
-            'extensionAttribute11' = 'SingleValueString'
-            'extensionAttribute12' = 'SingleValueString'
-            'extensionAttribute13' = 'SingleValueString'
-            'extensionAttribute14' = 'SingleValueString'
-            'extensionAttribute15' = 'SingleValueString'
-            'facsimileTelephoneNumber' = 'SingleValueString'
-            'givenName' = 'SingleValueString'
-            'info' = 'SingleValueString'
-            'initials' = 'SingleValueString'
-            'l' = 'SingleValueString'
-            'legacyExchangeDN' = 'SingleValueString'
-            'mail' = 'SingleValueString'
-            'mailNickname' = 'SingleValueString'
-            'manager' = 'SingleValueString'
-            'mAPIRecipient' = 'Boolean'
-            'memberOf' = 'MultiValueString'
-            'mobile' = 'SingleValueString'
-            'mS-DS-ConsistencyGuid' = 'GUID'
-            'msDS-parentdistname' = 'SingleValueString'
-            'msDS-PrincipalName' = 'SingleValueString'
-            'msExchAssistantName' = 'SingleValueString'
-            'msExchBypassModerationLink' = 'MultiValueString'
-            'msExchEnableModeration' = 'Boolean'
-            'msExchHideFromAddressLists' = 'Boolean'
-            'msExchLitigationHoldDate' = 'DateTime'
-            'msExchLitigationHoldOwner' = 'SingleValueString'
-            'msExchOriginatingForest' = 'SingleValueString'
-            'msExchPoliciesExcluded' = 'MultiValueString'
-            'msExchPoliciesIncluded' = 'MultiValueString'
-            'msExchRecipientDisplayType' = 'Int32'
-            'msExchRecipientTypeDetails' = 'IADsLargeInteger'
-            'msExchRemoteRecipientType' = 'IADsLargeInteger'
-            'msExchResourceCapacity' = 'Int32'
-            'msExchResourceDisplay' = 'SingleValueString'
-            'msExchResourceMetaData' = 'MultiValueString'
-            'msExchResourceSearchProperties' = 'MultiValueString'
-            'msExchUsageLocation' = 'SingleValueString'
-            'msExchVersion' = 'IADsLargeInteger'
-            'msRTCSIP-FederationEnabled' = 'Boolean'
-            'msRTCSIP-PrimaryHomeServer' ='SingleValueString'
-            'msRTCSIP-PrimaryUserAddress' = 'SingleValueString'
-            'msRTCSIP-UserEnabled' ='Boolean'
-            'o' = 'SingleValueString'
-            'objectGUID' = 'GUID'
-            'pager' = 'SingleValueString'
-            'physicalDeliveryOfficeName' = 'SingleValueString'
-            'postalCode' = 'SingleValueString'
-            'postOfficeBox' = 'SingleValueString'
-            'proxyAddresses' = 'MultiValueString'
-            'publicDelegates' = 'MultiValueString'
-            'sn' = 'SingleValueString'
-            'st' = 'SingleValueString'
-            'streetAddress' = 'SingleValueString'
-            'targetAddress' = 'SingleValueString'
-            'telephoneAssistant' = 'SingleValueString'
-            'telephoneNumber' = 'SingleValueString'
-            'title' = 'SingleValueString'
-            'whenChanged' = 'DateTime'
-            'whenCreated' = 'DateTime'
-        }
-
-        $jsonAttributes = [Collections.ArrayList] @(
-            'adminDescription',
-            'comment',
-            'extensionAttribute1',
-            'extensionAttribute2',
-            'extensionAttribute3',
-            'extensionAttribute4',
-            'extensionAttribute5',
-            'extensionAttribute6',
-            'extensionAttribute7',
-            'extensionAttribute8',
-            'extensionAttribute9',
-            'extensionAttribute10',
-            'extensionAttribute11',
-            'extensionAttribute12',
-            'extensionAttribute13',
-            'extensionAttribute14',
-            'extensionAttribute15'
-        )
     }
     Process { }
     End {
@@ -1407,7 +1694,7 @@ function Get-ADDSContact {
                 $domainSearcher.SearchScope = $SearchScope;
                 $domainSearcher.PageSize = 1000;
                 $domainSearcher.PropertiesToLoad.Clear();
-                $domainSearcher.PropertiesToLoad.AddRange( $script:attributeTypes.Keys );
+                $domainSearcher.PropertiesToLoad.AddRange( $Global:PSUtilsSettings.ContactAttributes );
 
                 if ( $LDAPFilter -eq '' ) {
                     if ( $Identity -eq '' ) {
@@ -1435,115 +1722,20 @@ function Get-ADDSContact {
                 if ( $searchResults.Count -gt 0 ) {
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
-                        [Object] $template = [pscustomobject][ordered] @{
-                            '_bcObjectType' = 'adContact'
-                            '_bcID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'adminDescription' = Get-ADDSAttributeValue -AttributeName 'adminDescription' -SearchResult $searchResult
-                            'c' = Get-ADDSAttributeValue -AttributeName 'c' -SearchResult $searchResult
-                            'canonicalName' = Get-ADDSAttributeValue -AttributeName 'canonicalName' -SearchResult $searchResult
-                            'cn' = Get-ADDSAttributeValue -AttributeName 'cn' -SearchResult $searchResult
-                            'co' = Get-ADDSAttributeValue -AttributeName 'co' -SearchResult $searchResult
-                            'comment' = Get-ADDSAttributeValue -AttributeName 'comment' -SearchResult $searchResult
-                            'company' = Get-ADDSAttributeValue -AttributeName 'company' -SearchResult $searchResult
-                            'countryCode' = Get-ADDSAttributeValue -AttributeName 'countryCode' -SearchResult $searchResult
-                            'department' = Get-ADDSAttributeValue -AttributeName 'department' -SearchResult $searchResult
-                            'description' = Get-ADDSAttributeValue -AttributeName 'description' -SearchResult $searchResult
-                            'directReports' = Get-ADDSAttributeValue -AttributeName 'directReports' -SearchResult $searchResult
-                            'displayName' = Get-ADDSAttributeValue -AttributeName 'displayName' -SearchResult $searchResult
-                            'distinguishedName' = Get-ADDSAttributeValue -AttributeName 'distinguishedName' -SearchResult $searchResult
-                            'division' = Get-ADDSAttributeValue -AttributeName 'division' -SearchResult $searchResult
-                            'employeeID' = Get-ADDSAttributeValue -AttributeName 'employeeID' -SearchResult $searchResult
-                            'employeeNumber' = Get-ADDSAttributeValue -AttributeName 'employeeNumber' -SearchResult $searchResult
-                            'employeeType' = Get-ADDSAttributeValue -AttributeName 'employeeType' -SearchResult $searchResult
-                            'extensionAttribute1' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute1' -SearchResult $searchResult
-                            'extensionAttribute2' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute2' -SearchResult $searchResult
-                            'extensionAttribute3' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute3' -SearchResult $searchResult
-                            'extensionAttribute4' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute4' -SearchResult $searchResult
-                            'extensionAttribute5' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute5' -SearchResult $searchResult
-                            'extensionAttribute6' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute6' -SearchResult $searchResult
-                            'extensionAttribute7' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute7' -SearchResult $searchResult
-                            'extensionAttribute8' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute8' -SearchResult $searchResult
-                            'extensionAttribute9' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute9' -SearchResult $searchResult
-                            'extensionAttribute10' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute10' -SearchResult $searchResult
-                            'extensionAttribute11' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute11' -SearchResult $searchResult
-                            'extensionAttribute12' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute12' -SearchResult $searchResult
-                            'extensionAttribute13' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute13' -SearchResult $searchResult
-                            'extensionAttribute14' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute14' -SearchResult $searchResult
-                            'extensionAttribute15' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute15' -SearchResult $searchResult
-                            'facsimileTelephoneNumber;' = Get-ADDSAttributeValue -AttributeName 'facsimileTelephoneNumber' -SearchResult $searchResult
-                            'givenName' = Get-ADDSAttributeValue -AttributeName 'givenName' -SearchResult $searchResult
-                            'info' = Get-ADDSAttributeValue -AttributeName 'info' -SearchResult $searchResult
-                            'initials' = Get-ADDSAttributeValue -AttributeName 'initials' -SearchResult $searchResult
-                            'l' = Get-ADDSAttributeValue -AttributeName 'l' -SearchResult $searchResult
-                            'legacyExchangeDN' = Get-ADDSAttributeValue -AttributeName 'legacyExchangeDN' -SearchResult $searchResult
-                            'mail' = Get-ADDSAttributeValue -AttributeName 'mail' -SearchResult $searchResult
-                            'mailNickname' = Get-ADDSAttributeValue -AttributeName 'mailNickname' -SearchResult $searchResult
-                            'mAPIRecipient' = Get-ADDSAttributeValue -AttributeName 'mAPIRecipient' -SearchResult $searchResult
-                            'manager' = Get-ADDSAttributeValue -AttributeName 'manager' -SearchResult $searchResult
-                            'memberOf' = Get-ADDSAttributeValue -AttributeName 'memberOf' -SearchResult $searchResult
-                            'mobile' = Get-ADDSAttributeValue -AttributeName 'mobile' -SearchResult $searchResult
-                            'ms-DS-ConsistencyGuid' = Get-ADDSAttributeValue -AttributeName 'ms-DS-ConsistencyGuid' -SearchResult $searchResult
-                            'msDS-parentdistname' = Get-ADDSAttributeValue -AttributeName 'msDS-parentdistname' -SearchResult $searchResult
-                            'msDS-PrincipalName' = Get-ADDSAttributeValue -AttributeName 'msDS-PrincipalName' -SearchResult $searchResult
-                            'msExchAssistantName' = Get-ADDSAttributeValue -AttributeName 'msExchAssistantName' -SearchResult $searchResult
-                            'msExchBypassModerationLink' = Get-ADDSAttributeValue -AttributeName 'msExchBypassModerationLink' -SearchResult $searchResult
-                            'msExchEnableModeration' = Get-ADDSAttributeValue -AttributeName 'msExchEnableModeration' -SearchResult $searchResult
-                            'msExchHideFromAddressLists' = Get-ADDSAttributeValue -AttributeName 'msExchHideFromAddressLists' -SearchResult $searchResult
-                            'msExchLitigationHoldDate' = Get-ADDSAttributeValue -AttributeName 'msExchLitigationHoldDate' -SearchResult $searchResult
-                            'msExchLitigationHoldOwner' = Get-ADDSAttributeValue -AttributeName 'msExchLitigationHoldOwner' -SearchResult $searchResult
-                            'msExchOriginatingForest' = Get-ADDSAttributeValue -AttributeName 'msExchOriginatingForest' -SearchResult $searchResult
-                            'msExchPoliciesExcluded' = Get-ADDSAttributeValue -AttributeName 'msExchPoliciesExcluded' -SearchResult $searchResult
-                            'msExchPoliciesIncluded' = Get-ADDSAttributeValue -AttributeName 'msExchPoliciesIncluded' -SearchResult $searchResult
-                            'msExchRecipientDisplayType' = Get-ADDSAttributeValue -AttributeName 'msExchRecipientDisplayType' -SearchResult $searchResult
-                            'msExchRecipientTypeDetails' = Get-ADDSAttributeValue -AttributeName 'msExchRecipientTypeDetails' -SearchResult $searchResult
-                            'msExchRemoteRecipientType' = Get-ADDSAttributeValue -AttributeName 'msExchRemoteRecipientType' -SearchResult $searchResult
-                            'msExchResourceCapacity' = Get-ADDSAttributeValue -AttributeName 'msExchResourceCapacity' -SearchResult $searchResult
-                            'msExchResourceDisplay' = Get-ADDSAttributeValue -AttributeName 'msExchResourceDisplay' -SearchResult $searchResult
-                            'msExchResourceMetaData' = Get-ADDSAttributeValue -AttributeName 'msExchResourceMetaData' -SearchResult $searchResult
-                            'msExchResourceSearchProperties' = Get-ADDSAttributeValue -AttributeName 'msExchResourceSearchProperties' -SearchResult $searchResult
-                            'msExchUsageLocation' = Get-ADDSAttributeValue -AttributeName 'msExchUsageLocation' -SearchResult $searchResult
-                            'msExchVersion' = Get-ADDSAttributeValue -AttributeName 'msExchVersion' -SearchResult $searchResult
-                            'msRTCSIP-FederationEnabled' = Get-ADDSAttributeValue -AttributeName 'msRTCSIP-FederationEnabled' -SearchResult $searchResult
-                            'msRTCSIP-PrimaryHomeServer' = Get-ADDSAttributeValue -AttributeName 'msRTCSIP-PrimaryHomeServer' -SearchResult $searchResult
-                            'PrimaryUserAddress' = Get-ADDSAttributeValue -AttributeName 'PrimaryUserAddress' -SearchResult $searchResult
-                            'msRTCSIP-UserEnabled' = Get-ADDSAttributeValue -AttributeName 'msRTCSIP-UserEnabled' -SearchResult $searchResult
-                            'o' = Get-ADDSAttributeValue -AttributeName 'o' -SearchResult $searchResult
-                            'objectGUID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'pager' = Get-ADDSAttributeValue -AttributeName 'pager' -SearchResult $searchResult
-                            'physicalDeliveryOfficeName' = Get-ADDSAttributeValue -AttributeName 'physicalDeliveryOfficeName' -SearchResult $searchResult
-                            'postalCode' = Get-ADDSAttributeValue -AttributeName 'postalCode' -SearchResult $searchResult
-                            'postOfficeBox' = Get-ADDSAttributeValue -AttributeName 'postOfficeBox' -SearchResult $searchResult
-                            'proxyAddresses' = Get-ADDSAttributeValue -AttributeName 'proxyAddresses' -SearchResult $searchResult
-                            'publicDelegates' = Get-ADDSAttributeValue -AttributeName 'publicDelegates' -SearchResult $searchResult
-                            'sn' = Get-ADDSAttributeValue -AttributeName 'sn' -SearchResult $searchResult
-                            'st' = Get-ADDSAttributeValue -AttributeName 'st' -SearchResult $searchResult
-                            'streetAddress' = Get-ADDSAttributeValue -AttributeName 'streetAddress' -SearchResult $searchResult
-                            'targetAddress' = Get-ADDSAttributeValue -AttributeName 'targetAddress' -SearchResult $searchResult
-                            'telephoneAssistant' = Get-ADDSAttributeValue -AttributeName 'telephoneAssistant' -SearchResult $searchResult
-                            'telephoneNumber' = Get-ADDSAttributeValue -AttributeName 'telephoneNumber' -SearchResult $searchResult
-                            'title' = Get-ADDSAttributeValue -AttributeName 'title' -SearchResult $searchResult
-                            'whenChanged' = Get-ADDSAttributeValue -AttributeName 'whenChanged' -SearchResult $searchResult
-                            'whenCreated' = Get-ADDSAttributeValue -AttributeName 'whenCreated' -SearchResult $searchResult
-                        }
+                        if ( $searchResults.Count -gt 0 ) {
+                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
+                        foreach ( $searchResult in $searchResults ) {
+                            $template = [ordered] @{};
 
-                        foreach ( $jsonAttribute in $jsonAttributes ) {
-                            if ( $template.$jsonAttribute.StartsWith( '{' ) -and $template.$jsonAttribute.EndsWith( '}' ) ) {
-                                Write-Verbose -Message ( "The following attribute looks like it might have JSON data = {0}" -f $jsonAttribute );
-                                $jsonDataValues = ConvertFrom-JsonString -Value $template.$jsonAttribute;
-
-                                if ( $null -ne $jsonDataValues ) {
-                                    Write-Verbose -Message 'Building a JSON document from the attribute value'
-                                    $customPropertyName = '';
-                                    $customPropertyValue = '';
-
-                                    foreach ( $jsonDataValue in $jsonDataValues.GetEnumerator() ) {
-                                        $customPropertyName = "{0}" -f $jsonDataValue.Key;
-                                        $customPropertyValue = $jsonDataValue.Value;
-                                        Add-Member -InputObject $template -MemberType NoteProperty -Name $customPropertyName -Value $customPropertyValue -ErrorAction SilentlyContinue;
-                                    }
-                                }
+                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
+                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                                $template.Add( $attribute, $attributeValue );
                             }
+
+                            Write-Verbose -Message 'Add the current object to the results collection'
+                            [Void] $output.Add( $template );
                         }
+                    }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
@@ -1582,7 +1774,7 @@ function Get-ADDSContact {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.0.0
+    Version: 1.2.020824
 .EXAMPLE
     $adForeignSecurityPrincipals = Get-ADDSForeignSecurityPrincipal;
 
@@ -1624,17 +1816,6 @@ function Get-ADDSForeignSecurityPrincipal {
         Write-Verbose -Message ( " -Server = {0}" -f $Server );
 
         [String] $bindString = '';
-        [Hashtable] $script:attributeTypes = @{
-            'canonicalName' = 'SingleValueString'
-            'cn' = 'SingleValueString'
-            'distinguishedName' = 'SingleValueString'
-            'msDS-parentdistname' = 'SingleValueString'
-            'msDS-PrincipalName' = 'SingleValueString'
-            'objectGUID' = 'GUID'
-            'objectSid' = 'StringSID'
-            'whenChanged' = 'DateTime'
-            'whenCreated' = 'DateTime'
-        }
     }
     Process { }
     End {
@@ -1659,7 +1840,7 @@ function Get-ADDSForeignSecurityPrincipal {
                 $domainSearcher.SearchScope = 'Subtree';
                 $domainSearcher.PageSize = 1000;
                 $domainSearcher.PropertiesToLoad.Clear();
-                $domainSearcher.PropertiesToLoad.AddRange( $script:attributeTypes.Keys );
+                $domainSearcher.PropertiesToLoad.AddRange( $Global:PSUtilsSettings.ForeignSecurityPrincipalAttributes );
 
                 if ( $LDAPFilter -eq '' ) {
                     if ( $Identity -eq '' ) {
@@ -1687,19 +1868,20 @@ function Get-ADDSForeignSecurityPrincipal {
                 if ( $searchResults.Count -gt 0 ) {
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
-                        [Object] $template = [pscustomobject][ordered] @{
-                            '_bcObjectType' = 'adForeignSecurityPrincipal'
-                            '_bcID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'canonicalName' = Get-ADDSAttributeValue -AttributeName 'canonicalName' -SearchResult $searchResult
-                            'cn' = Get-ADDSAttributeValue -AttributeName 'cn' -SearchResult $searchResult
-                            'distinguishedName' = Get-ADDSAttributeValue -AttributeName 'distinguishedName' -SearchResult $searchResult
-                            'msDS-parentdistname' = Get-ADDSAttributeValue -AttributeName 'msDS-parentdistname' -SearchResult $searchResult
-                            'msDS-PrincipalName' = Get-ADDSAttributeValue -AttributeName 'msDS-PrincipalName' -SearchResult $searchResult
-                            'objectGUID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'objectSid' = Get-ADDSAttributeValue -AttributeName 'objectSid' -SearchResult $searchResult
-                            'whenChanged' = Get-ADDSAttributeValue -AttributeName 'whenChanged' -SearchResult $searchResult
-                            'whenCreated' = Get-ADDSAttributeValue -AttributeName 'whenCreated' -SearchResult $searchResult
+                        if ( $searchResults.Count -gt 0 ) {
+                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
+                        foreach ( $searchResult in $searchResults ) {
+                            $template = [ordered] @{};
+
+                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
+                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                                $template.Add( $attribute, $attributeValue );
+                            }
+
+                            Write-Verbose -Message 'Add the current object to the results collection'
+                            [Void] $output.Add( $template );
                         }
+                    }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
@@ -1746,7 +1928,7 @@ function Get-ADDSForeignSecurityPrincipal {
     returned from the cmdlet, a collection will the returned.
 .NOTES
     Author: fr3dd
-    Version: 1.0.0
+    Version: 1.2.020824
 .EXAMPLE
     $adGroups = Get-ADDSGroup;
 
@@ -1801,97 +1983,6 @@ function Get-ADDSGroup {
         Write-Verbose -Message ( " -SearchScope = {0}" -f $SearchScope );
 
         [String] $bindString = '';
-        [Hashtable] $script:attributeTypes = @{
-            'adminCount' = 'Int32'
-            'adminDescription' = 'SingleValueString'
-            'canonicalName' = 'SingleValueString'
-            'cn' = 'SingleValueString'
-            'comment' = 'SingleValueString'
-            'description' = 'SingleValueString'
-            'displayName' = 'SingleValueString'
-            'distinguishedName' = 'SingleValueString'
-            'extensionAttribute1' = 'SingleValueString'
-            'extensionAttribute2' = 'SingleValueString'
-            'extensionAttribute3' = 'SingleValueString'
-            'extensionAttribute4' = 'SingleValueString'
-            'extensionAttribute5' = 'SingleValueString'
-            'extensionAttribute6' = 'SingleValueString'
-            'extensionAttribute7' = 'SingleValueString'
-            'extensionAttribute8' = 'SingleValueString'
-            'extensionAttribute9' = 'SingleValueString'
-            'extensionAttribute10' = 'SingleValueString'
-            'extensionAttribute11' = 'SingleValueString'
-            'extensionAttribute12' = 'SingleValueString'
-            'extensionAttribute13' = 'SingleValueString'
-            'extensionAttribute14' = 'SingleValueString'
-            'extensionAttribute15' = 'SingleValueString'
-            'gidNumber' = 'Int32'
-            'groupType' = 'Int32'
-            'info' = 'SingleValueString'
-            'legacyExchangeDN' = 'SingleValueString'
-            'mail' = 'SingleValueString'
-            'mailNickname' = 'SingleValueString'
-            'managedBy' = 'SingleValueString'
-            'member' = 'MultiValueString'
-            'memberOf' = 'MultiValueString'
-            'memberUid' = 'MultiValueString'
-            'msDS-parentdistname' = 'SingleValueString'
-            'msDS-PrincipalName' = 'SingleValueString'
-            'msExchArchiveGUID' = 'GUID'
-            'msExchArchiveName' = 'SingleValueString'
-            'msExchArchiveStatus' = 'Int32'
-            'msExchAssistantName' = 'SingleValueString'
-            'msExchBypassModerationLink' = 'MultiValueString'
-            'msExchEnableModeration' = 'Boolean'
-            'msExchHideFromAddressLists' = 'Boolean'
-            'msExchLitigationHoldDate' = 'DateTime'
-            'msExchLitigationHoldOwner' = 'SingleValueString'
-            'msExchMailboxGuid' = 'GUID'
-            'msExchMasterAccountHistory' = 'MultiValueStringSid'
-            'msExchMasterAccountSid' = 'StringSID'
-            'msExchOriginatingForest' = 'MultiValueString'
-            'msExchPoliciesExcluded' = 'MultiValueString'
-            'msExchPoliciesIncluded' = 'MultiValueString'
-            'msExchRecipientDisplayType' = 'Int32'
-            'msExchRecipientTypeDetails' = 'IADsLargeInteger'
-            'msExchRemoteRecipientType' = 'IADsLargeInteger'
-            'msExchResourceCapacity' = 'Int32'
-            'msExchResourceDisplay' = 'SingleValueString'
-            'msExchResourceMetaData' = 'MultiValueString'
-            'msExchResourceSearchProperties' = 'MultiValueString'
-            'msExchVersion' = 'IADsLargeInteger'
-            'msSFU30NisDomain' = 'SingleValueString'
-            'objectGUID' = 'GUID'
-            'objectSid' = 'StringSID'
-            'primaryGroupToken' = 'Int32'
-            'proxyAddresses' = 'MultiValueString'
-            'publicDelegates' = 'MultiValueString'
-            'sAMAccountName' = 'SingleValueString'
-            'sIDHistory' = 'MultiValueStringSid'
-            'targetAddress' = 'SingleValueString'
-            'whenChanged' = 'DateTime'
-            'whenCreated' = 'DateTime'
-        }
-
-        $jsonAttributes = [Collections.ArrayList] @(
-            'adminDescription',
-            'comment',
-            'extensionAttribute1',
-            'extensionAttribute2',
-            'extensionAttribute3',
-            'extensionAttribute4',
-            'extensionAttribute5',
-            'extensionAttribute6',
-            'extensionAttribute7',
-            'extensionAttribute8',
-            'extensionAttribute9',
-            'extensionAttribute10',
-            'extensionAttribute11',
-            'extensionAttribute12',
-            'extensionAttribute13',
-            'extensionAttribute14',
-            'extensionAttribute15'
-        )
     }
     Process { }
     End {
@@ -1924,7 +2015,7 @@ function Get-ADDSGroup {
                 $domainSearcher.SearchScope = $SearchScope;
                 $domainSearcher.PageSize = 1000;
                 $domainSearcher.PropertiesToLoad.Clear();
-                $domainSearcher.PropertiesToLoad.AddRange( $script:attributeTypes.Keys );
+                $domainSearcher.PropertiesToLoad.AddRange( $Global:PSUtilsSettings.GroupAttributes );
 
                 if ( $LDAPFilter -eq '' ) {
                     if ( $Identity -eq '' ) {
@@ -1951,99 +2042,20 @@ function Get-ADDSGroup {
                 if ( $searchResults.Count -gt 0 ) {
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
                     foreach ( $searchResult in $searchResults ) {
-                        [Object] $template = [pscustomobject][ordered] @{
-                            '_bcObjectType' = 'adGroup'
-                            '_bcID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'adminCount' = Get-ADDSAttributeValue -AttributeName 'adminCount' -SearchResult $searchResult
-                            'adminDescription' = Get-ADDSAttributeValue -AttributeName 'adminDescription' -SearchResult $searchResult
-                            'canonicalName' = Get-ADDSAttributeValue -AttributeName 'canonicalName' -SearchResult $searchResult
-                            'cn' = Get-ADDSAttributeValue -AttributeName 'cn' -SearchResult $searchResult
-                            'comment' = Get-ADDSAttributeValue -AttributeName 'comment' -SearchResult $searchResult
-                            'description' = Get-ADDSAttributeValue -AttributeName 'description' -SearchResult $searchResult
-                            'displayName' = Get-ADDSAttributeValue -AttributeName 'displayName' -SearchResult $searchResult
-                            'distinguishedName' = Get-ADDSAttributeValue -AttributeName 'distinguishedName' -SearchResult $searchResult
-                            'extensionAttribute1' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute1' -SearchResult $searchResult
-                            'extensionAttribute2' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute2' -SearchResult $searchResult
-                            'extensionAttribute3' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute3' -SearchResult $searchResult
-                            'extensionAttribute4' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute4' -SearchResult $searchResult
-                            'extensionAttribute5' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute5' -SearchResult $searchResult
-                            'extensionAttribute6' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute6' -SearchResult $searchResult
-                            'extensionAttribute7' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute7' -SearchResult $searchResult
-                            'extensionAttribute8' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute8' -SearchResult $searchResult
-                            'extensionAttribute9' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute9' -SearchResult $searchResult
-                            'extensionAttribute10' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute10' -SearchResult $searchResult
-                            'extensionAttribute11' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute11' -SearchResult $searchResult
-                            'extensionAttribute12' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute12' -SearchResult $searchResult
-                            'extensionAttribute13' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute13' -SearchResult $searchResult
-                            'extensionAttribute14' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute14' -SearchResult $searchResult
-                            'extensionAttribute15' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute15' -SearchResult $searchResult
-                            'gidNumber' = Get-ADDSAttributeValue -AttributeName 'gidNumber' -SearchResult $searchResult
-                            'groupType' = Get-ADDSAttributeValue -AttributeName 'groupType' -SearchResult $searchResult
-                            'info' = Get-ADDSAttributeValue -AttributeName 'info' -SearchResult $searchResult
-                            'legacyExchangeDN' = Get-ADDSAttributeValue -AttributeName 'legacyExchangeDN' -SearchResult $searchResult
-                            'mail' = Get-ADDSAttributeValue -AttributeName 'mail' -SearchResult $searchResult
-                            'mailNickname' = Get-ADDSAttributeValue -AttributeName 'mailNickname' -SearchResult $searchResult
-                            'managedBy' = Get-ADDSAttributeValue -AttributeName 'managedBy' -SearchResult $searchResult
-                            'member' = Get-ADDSAttributeValue -AttributeName 'member' -SearchResult $searchResult
-                            'memberOf' = Get-ADDSAttributeValue -AttributeName 'memberOf' -SearchResult $searchResult
-                            'memberUid' = Get-ADDSAttributeValue -AttributeName 'memberUid' -SearchResult $searchResult
-                            'ms-DS-ConsistencyGuid' = Get-ADDSAttributeValue -AttributeName 'ms-DS-ConsistencyGuid' -SearchResult $searchResult
-                            'msDS-parentdistname' = Get-ADDSAttributeValue -AttributeName 'msDS-parentdistname' -SearchResult $searchResult
-                            'msDS-PrincipalName' = Get-ADDSAttributeValue -AttributeName 'msDS-PrincipalName' -SearchResult $searchResult
-                            'msExchArchiveGUID' = Get-ADDSAttributeValue -AttributeName 'msExchArchiveGUID' -SearchResult $searchResult
-                            'msExchArchiveName' = Get-ADDSAttributeValue -AttributeName 'msExchArchiveName' -SearchResult $searchResult
-                            'msExchArchiveStatus' = Get-ADDSAttributeValue -AttributeName 'msExchArchiveStatus' -SearchResult $searchResult
-                            'msExchAssistantName' = Get-ADDSAttributeValue -AttributeName 'msExchAssistantName' -SearchResult $searchResult
-                            'msExchBypassModerationLink' = Get-ADDSAttributeValue -AttributeName 'msExchBypassModerationLink' -SearchResult $searchResult
-                            'msExchEnableModeration' = Get-ADDSAttributeValue -AttributeName 'msExchEnableModeration' -SearchResult $searchResult
-                            'msExchHideFromAddressLists' = Get-ADDSAttributeValue -AttributeName 'msExchHideFromAddressLists' -SearchResult $searchResult
-                            'msExchLitigationHoldDate' = Get-ADDSAttributeValue -AttributeName 'msExchLitigationHoldDate' -SearchResult $searchResult
-                            'msExchLitigationHoldOwner' = Get-ADDSAttributeValue -AttributeName 'msExchLitigationHoldOwner' -SearchResult $searchResult
-                            'msExchMailboxGuid' = Get-ADDSAttributeValue -AttributeName 'msExchMailboxGuid' -SearchResult $searchResult
-                            'msExchMasterAccountHistory' = Get-ADDSAttributeValue -AttributeName 'msExchMasterAccountHistory' -SearchResult $searchResult
-                            'msExchMasterAccountSid' = Get-ADDSAttributeValue -AttributeName 'msExchMasterAccountSid' -SearchResult $searchResult
-                            'msExchOriginatingForest' = Get-ADDSAttributeValue -AttributeName 'msExchOriginatingForest' -SearchResult $searchResult
-                            'msExchPoliciesExcluded' = Get-ADDSAttributeValue -AttributeName 'msExchPoliciesExcluded' -SearchResult $searchResult
-                            'msExchPoliciesIncluded' = Get-ADDSAttributeValue -AttributeName 'msExchPoliciesIncluded' -SearchResult $searchResult
-                            'msExchRecipientDisplayType' = Get-ADDSAttributeValue -AttributeName 'msExchRecipientDisplayType' -SearchResult $searchResult
-                            'msExchRecipientTypeDetails' = Get-ADDSAttributeValue -AttributeName 'msExchRecipientTypeDetails' -SearchResult $searchResult
-                            'msExchRemoteRecipientType' = Get-ADDSAttributeValue -AttributeName 'msExchRemoteRecipientType' -SearchResult $searchResult
-                            'msExchResourceCapacity' = Get-ADDSAttributeValue -AttributeName 'msExchResourceCapacity' -SearchResult $searchResult
-                            'msExchResourceDisplay' = Get-ADDSAttributeValue -AttributeName 'msExchResourceDisplay' -SearchResult $searchResult
-                            'msExchResourceMetaData' = Get-ADDSAttributeValue -AttributeName 'msExchResourceMetaData' -SearchResult $searchResult
-                            'msExchResourceSearchProperties' = Get-ADDSAttributeValue -AttributeName 'msExchResourceSearchProperties' -SearchResult $searchResult
-                            'msExchVersion' = Get-ADDSAttributeValue -AttributeName 'msExchVersion' -SearchResult $searchResult
-                            'msSFU30NisDomain' = Get-ADDSAttributeValue -AttributeName 'msSFU30NisDomain' -SearchResult $searchResult
-                            'objectGUID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'objectSid' = Get-ADDSAttributeValue -AttributeName 'objectSid' -SearchResult $searchResult
-                            'primaryGroupToken' = Get-ADDSAttributeValue -AttributeName 'primaryGroupToken' -SearchResult $searchResult
-                            'proxyAddresses' = Get-ADDSAttributeValue -AttributeName 'proxyAddresses' -SearchResult $searchResult
-                            'publicDelegates' = Get-ADDSAttributeValue -AttributeName 'publicDelegates' -SearchResult $searchResult
-                            'sAMAccountName' = Get-ADDSAttributeValue -AttributeName 'sAMAccountName' -SearchResult $searchResult
-                            'sIDHistory' = Get-ADDSAttributeValue -AttributeName 'sIDHistory' -SearchResult $searchResult
-                            'targetAddress' = Get-ADDSAttributeValue -AttributeName 'targetAddress' -SearchResult $searchResult
-                            'whenChanged' = Get-ADDSAttributeValue -AttributeName 'whenChanged' -SearchResult $searchResult
-                            'whenCreated' = Get-ADDSAttributeValue -AttributeName 'whenCreated' -SearchResult $searchResult
-                        }
+                        if ( $searchResults.Count -gt 0 ) {
+                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
+                        foreach ( $searchResult in $searchResults ) {
+                            $template = [ordered] @{};
 
-                        foreach ( $jsonAttribute in $jsonAttributes ) {
-                            if ( $template.$jsonAttribute.StartsWith( '{' ) -and $template.$jsonAttribute.EndsWith( '}' ) ) {
-                                Write-Verbose -Message ( "The following attribute looks like it might have JSON data = {0}" -f $jsonAttribute );
-                                $jsonDataValues = ConvertFrom-JsonString -Value $template.$jsonAttribute;
-
-                                if ( $null -ne $jsonDataValues ) {
-                                    Write-Verbose -Message 'Building a JSON document from the attribute value'
-                                    $customPropertyName = '';
-                                    $customPropertyValue = '';
-
-                                    foreach ( $jsonDataValue in $jsonDataValues.GetEnumerator() ) {
-                                        $customPropertyName = "{0}" -f $jsonDataValue.Key;
-                                        $customPropertyValue = $jsonDataValue.Value;
-                                        Add-Member -InputObject $template -MemberType NoteProperty -Name $customPropertyName -Value $customPropertyValue -ErrorAction SilentlyContinue;
-                                    }
-                                }
+                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
+                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                                $template.Add( $attribute, $attributeValue );
                             }
+
+                            Write-Verbose -Message 'Add the current object to the results collection'
+                            [Void] $output.Add( $template );
                         }
+                    }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
@@ -2089,7 +2101,7 @@ function Get-ADDSGroup {
     This cmdlet returns a boolean value indicating whether an object was located or not.
 .NOTES
     Author: fr3dd
-    Version: 1.0.0
+    Version: 1.2.020824
 .EXAMPLE
     $adUsers = Get-ADDSUser;
 
@@ -2144,165 +2156,6 @@ function Get-ADDSUser {
         Write-Verbose -Message ( " -SearchScope = {0}" -f $SearchScope );
 
         [String] $bindString = '';
-        [Hashtable] $script:attributeTypes = @{
-            'accountExpires' = 'IADsLargeInteger'
-            'adminCount' = 'Int32'
-            'adminDescription' = 'SingleValueString'
-            'badPasswordTime' = 'IADsLargeInteger'
-            'badPwdCount' = 'Int32'
-            'c' = 'SingleValueString'
-            'canonicalName' = 'SingleValueString'
-            'cn' = 'SingleValueString'
-            'co' = 'SingleValueString'
-            'comment' = 'SingleValueString'
-            'company' = 'SingleValueString'
-            'countryCode' = 'SingleValueString'
-            'deliverAndRedirect' = 'Boolean'
-            'department' = 'SingleValueString'
-            'description' = 'SingleValueString'
-            'directReports' = 'MultiValueString'
-            'displayName' = 'SingleValueString'
-            'distinguishedName' = 'SingleValueString'
-            'division' = 'SingleValueString'
-            'employeeID' = 'SingleValueString'
-            'employeeNumber' = 'SingleValueString'
-            'employeeType' = 'SingleValueString'
-            'extensionAttribute1' = 'SingleValueString'
-            'extensionAttribute2' = 'SingleValueString'
-            'extensionAttribute3' = 'SingleValueString'
-            'extensionAttribute4' = 'SingleValueString'
-            'extensionAttribute5' = 'SingleValueString'
-            'extensionAttribute6' = 'SingleValueString'
-            'extensionAttribute7' = 'SingleValueString'
-            'extensionAttribute8' = 'SingleValueString'
-            'extensionAttribute9' = 'SingleValueString'
-            'extensionAttribute10' = 'SingleValueString'
-            'extensionAttribute11' = 'SingleValueString'
-            'extensionAttribute12' = 'SingleValueString'
-            'extensionAttribute13' = 'SingleValueString'
-            'extensionAttribute14' = 'SingleValueString'
-            'extensionAttribute15' = 'SingleValueString'
-            'facsimileTelephoneNumber' = 'SingleValueString'
-            'gidNumber' = 'Int32'
-            'givenName' = 'SingleValueString'
-            'homeDirectory' = 'SingleValueString'
-            'homeDrive' = 'SingleValueString'
-            'homeMDB' = 'SingleValueString'
-            'info' = 'SingleValueString'
-            'initials' = 'SingleValueString'
-            'l' = 'SingleValueString'
-            'lastLogonTimestamp' = 'IADsLargeInteger'
-            'legacyExchangeDN' = 'SingleValueString'
-            'lockoutTime' = 'IADsLargeInteger'
-            'loginShell' = 'SingleValueString'
-            'logonCount' = 'Int32'
-            'mDBOverQuotaLimit' = 'Int32'
-            'mDBStorageQuota' = 'Int32'
-            'mDBUseDefaults' = 'Boolean'
-            'mail' = 'SingleValueString'
-            'mailNickname' = 'SingleValueString'
-            'manager' = 'SingleValueString'
-            'memberOf' = 'MultiValueString'
-            'mobile' = 'SingleValueString'
-            'ms-DS-ConsistencyGuid' = 'GUID'
-            'msDS-parentdistname' = 'SingleValueString'
-            'msDS-PrincipalName' = 'SingleValueString'
-            'msExchArchiveGUID' = 'GUID'
-            'msExchArchiveName' = 'SingleValueString'
-            'msExchArchiveStatus' = 'Int32'
-            'msExchAssistantName' = 'SingleValueString'
-            'msExchBypassModerationLink' = 'MultiValueString'
-            'msExchEnableModeration' = 'Boolean'
-            'msExchHideFromAddressLists' = 'Boolean'
-            'msExchHomeServerName' = 'SingleValueString'
-            'msExchLitigationHoldDate' = 'DateTime'
-            'msExchLitigationHoldOwner' = 'SingleValueString'
-            'msExchMailboxGuid' = 'GUID'
-            'msExchMasterAccountHistory' = 'MultiValueStringSid'
-            'msExchMasterAccountSid' = 'StringSID'
-            'msExchOriginatingForest' = 'MultiValueString'
-            'msExchPoliciesExcluded' = 'MultiValueString'
-            'msExchPoliciesIncluded' = 'MultiValueString'
-            'msExchRecipientDisplayType' = 'Int32'
-            'msExchRecipientTypeDetails' = 'IADsLargeInteger'
-            'msExchRemoteRecipientType' = 'IADsLargeInteger'
-            'msExchResourceCapacity' = 'Int32'
-            'msExchResourceDisplay' = 'SingleValueString'
-            'msExchResourceMetaData' = 'MultiValueString'
-            'msExchResourceProperties' = 'MultiValueString'
-            'msExchResourceSearchProperties' = 'MultiValueString'
-            'msExchShadowProxyAddresses' = 'MultiValueString'
-            'msExchUsageLocation' = 'SingleValueString'
-            'msExchVersion' = 'IADsLargeInteger'
-            'msExchWhenMailboxCreated' = 'DateTime'
-            'msNPAllowDialin' = 'Boolean'
-            'msRTCSIP-FederationEnabled' = 'Boolean'
-            'msRTCSIP-PrimaryHomeServer' = 'SingleValueString'
-            'msRTCSIP-PrimaryUserAddress' = 'SingleValueString'
-            'msRTCSIP-UserEnabled' = 'Boolean'
-            'msSFU30NisDomain' = 'SingleValueString'
-            'o' = 'SingleValueString'
-            'objectGUID' = 'GUID'
-            'objectSid' = 'StringSID'
-            'pager' = 'SingleValueString'
-            'physicalDeliveryOfficeName' = 'SingleValueString'
-            'postalCode' = 'SingleValueString'
-            'postOfficeBox' = 'SingleValueString'
-            'primaryGroupID' = 'Int32'
-            'proxyAddresses' = 'MultiValueString'
-            'publicDelegates' = 'MultiValueString'
-            'pwdLastSet' = 'IADsLargeInteger'
-            'sAMAccountName' = 'SingleValueString'
-            'scriptPath' = 'SingleValueString'
-            'servicePrincipalName' = 'MultiValueString'
-            'shadowExpire' = 'Int32'
-            'shadowFlag' = 'Int32'
-            'shadowInactive' = 'Int32'
-            'shadowLastChange' = 'Int32'
-            'shadowMax' = 'Int32'
-            'shadowMin' = 'Int32'
-            'shadowWarning' = 'Int32'
-            'showInAddressBook' = 'MultiValueString'
-            'sIDHistory' = 'MultiValueStringSid'
-            'sn' = 'SingleValueString'
-            'st' = 'SingleValueString'
-            'streetAddress' = 'SingleValueString'
-            'targetAddress' = 'SingleValueString'
-            'telephoneAssistant' = 'SingleValueString'
-            'telephoneNumber' = 'SingleValueString'
-            'textEncodedORAddress' = 'SingleValueString'
-            'title' = 'SingleValueString'
-            'uid' = 'SingleValueString'
-            'uidNumber' = 'Int32'
-            'unixHomeDirectory' = 'SingleValueString'
-            'userAccountControl' = 'Int32'
-            'userParameters' = 'TSEncodedBlob'
-            'userPrincipalName' = 'SingleValueString'
-            'userWorkstations' = 'SingleValueString'
-            'whenChanged' = 'DateTime'
-            'whenCreated' = 'DateTime'
-            'wwWWHomePage' = 'SingleValueString'
-        }
-
-        $jsonAttributes = [Collections.ArrayList] @(
-            'adminDescription',
-            'comment',
-            'extensionAttribute1',
-            'extensionAttribute2',
-            'extensionAttribute3',
-            'extensionAttribute4',
-            'extensionAttribute5',
-            'extensionAttribute6',
-            'extensionAttribute7',
-            'extensionAttribute8',
-            'extensionAttribute9',
-            'extensionAttribute10',
-            'extensionAttribute11',
-            'extensionAttribute12',
-            'extensionAttribute13',
-            'extensionAttribute14',
-            'extensionAttribute15'
-        )
     }
     Process { }
     End {
@@ -2335,7 +2188,7 @@ function Get-ADDSUser {
                 $domainSearcher.SearchScope = $SearchScope;
                 $domainSearcher.PageSize = 1000;
                 $domainSearcher.PropertiesToLoad.Clear();
-                $domainSearcher.PropertiesToLoad.AddRange( $script:attributeTypes.Keys );
+                $domainSearcher.PropertiesToLoad.AddRange( $Global:PSUtilsSettings.UserAttributes );
 
                 if ( $LDAPFilter -eq '' ) {
                     if ( $Identity -eq '' ) {
@@ -2362,185 +2215,21 @@ function Get-ADDSUser {
 
                 if ( $searchResults.Count -gt 0 ) {
                     Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
-                    foreach ( $searchResult in $searchResults )
-                    {
-                        [Object] $template = [pscustomobject][ordered] @{
-                            '_bcObjectType' = 'adUser'
-                            '_bcID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'accountExpires' = Get-ADDSAttributeValue -AttributeName 'accountExpires' -SearchResult $searchResult
-                            'adminCount' = Get-ADDSAttributeValue -AttributeName 'adminCount' -SearchResult $searchResult
-                            'adminDescription' = Get-ADDSAttributeValue -AttributeName 'adminDescription' -SearchResult $searchResult
-                            'badPasswordTime' = Get-ADDSAttributeValue -AttributeName 'badPasswordTime' -SearchResult $searchResult
-                            'badPwdCount' = Get-ADDSAttributeValue -AttributeName 'badPwdCount' -SearchResult $searchResult
-                            'c' = Get-ADDSAttributeValue -AttributeName 'c' -SearchResult $searchResult
-                            'canonicalName' = Get-ADDSAttributeValue -AttributeName 'canonicalName' -SearchResult $searchResult
-                            'cn' = Get-ADDSAttributeValue -AttributeName 'cn' -SearchResult $searchResult
-                            'co' = Get-ADDSAttributeValue -AttributeName 'co' -SearchResult $searchResult
-                            'comment' = Get-ADDSAttributeValue -AttributeName 'comment' -SearchResult $searchResult
-                            'company' = Get-ADDSAttributeValue -AttributeName 'company' -SearchResult $searchResult
-                            'countryCode' = Get-ADDSAttributeValue -AttributeName 'countryCode' -SearchResult $searchResult
-                            'department' = Get-ADDSAttributeValue -AttributeName 'department' -SearchResult $searchResult
-                            'description' = Get-ADDSAttributeValue -AttributeName 'description' -SearchResult $searchResult
-                            'directReports' = Get-ADDSAttributeValue -AttributeName 'directReports' -SearchResult $searchResult
-                            'displayName' = Get-ADDSAttributeValue -AttributeName 'displayName' -SearchResult $searchResult
-                            'distinguishedName' = Get-ADDSAttributeValue -AttributeName 'distinguishedName' -SearchResult $searchResult
-                            'division' = Get-ADDSAttributeValue -AttributeName 'division' -SearchResult $searchResult
-                            'employeeID' = Get-ADDSAttributeValue -AttributeName 'employeeID' -SearchResult $searchResult
-                            'employeeNumber' = Get-ADDSAttributeValue -AttributeName 'employeeNumber' -SearchResult $searchResult
-                            'employeeType' = Get-ADDSAttributeValue -AttributeName 'employeeType' -SearchResult $searchResult
-                            'extensionAttribute1' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute1' -SearchResult $searchResult
-                            'extensionAttribute2' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute2' -SearchResult $searchResult
-                            'extensionAttribute3' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute3' -SearchResult $searchResult
-                            'extensionAttribute4' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute4' -SearchResult $searchResult
-                            'extensionAttribute5' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute5' -SearchResult $searchResult
-                            'extensionAttribute6' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute6' -SearchResult $searchResult
-                            'extensionAttribute7' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute7' -SearchResult $searchResult
-                            'extensionAttribute8' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute8' -SearchResult $searchResult
-                            'extensionAttribute9' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute9' -SearchResult $searchResult
-                            'extensionAttribute10' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute10' -SearchResult $searchResult
-                            'extensionAttribute11' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute11' -SearchResult $searchResult
-                            'extensionAttribute12' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute12' -SearchResult $searchResult
-                            'extensionAttribute13' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute13' -SearchResult $searchResult
-                            'extensionAttribute14' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute14' -SearchResult $searchResult
-                            'extensionAttribute15' = Get-ADDSAttributeValue -AttributeName 'extensionAttribute15' -SearchResult $searchResult
-                            'facsimileTelephoneNumber;' = Get-ADDSAttributeValue -AttributeName 'facsimileTelephoneNumber' -SearchResult $searchResult
-                            'gidNumber' = Get-ADDSAttributeValue -AttributeName 'gidNumber' -SearchResult $searchResult
-                            'givenName' = Get-ADDSAttributeValue -AttributeName 'givenName' -SearchResult $searchResult
-                            'homeDirectory' = Get-ADDSAttributeValue -AttributeName 'homeDirectory' -SearchResult $searchResult
-                            'homeDrive' = Get-ADDSAttributeValue -AttributeName 'homeDrive' -SearchResult $searchResult
-                            'homeMDB' = Get-ADDSAttributeValue -AttributeName 'homeMDB' -SearchResult $searchResult
-                            'info' = Get-ADDSAttributeValue -AttributeName 'info' -SearchResult $searchResult
-                            'initials' = Get-ADDSAttributeValue -AttributeName 'initials' -SearchResult $searchResult
-                            'l' = Get-ADDSAttributeValue -AttributeName 'l' -SearchResult $searchResult
-                            'lastLogonTimestamp' = Get-ADDSAttributeValue -AttributeName 'lastLogonTimestamp' -SearchResult $searchResult
-                            'legacyExchangeDN' = Get-ADDSAttributeValue -AttributeName 'legacyExchangeDN' -SearchResult $searchResult
-                            'lockoutTime' = Get-ADDSAttributeValue -AttributeName 'lockoutTime' -SearchResult $searchResult
-                            'loginShell' = Get-ADDSAttributeValue -AttributeName 'loginShell' -SearchResult $searchResult
-                            'logonCount' = Get-ADDSAttributeValue -AttributeName 'logonCount' -SearchResult $searchResult
-                            'mDBOverQuotaLimit' = Get-ADDSAttributeValue -AttributeName 'mDBOverQuotaLimit' -SearchResult $searchResult
-                            'mDBStorageQuota' = Get-ADDSAttributeValue -AttributeName 'mDBStorageQuota' -SearchResult $searchResult
-                            'mDBUseDefaults' = Get-ADDSAttributeValue -AttributeName 'mDBUseDefaults' -SearchResult $searchResult
-                            'mail' = Get-ADDSAttributeValue -AttributeName 'mail' -SearchResult $searchResult
-                            'mailNickname' = Get-ADDSAttributeValue -AttributeName 'mailNickname' -SearchResult $searchResult
-                            'manager' = Get-ADDSAttributeValue -AttributeName 'manager' -SearchResult $searchResult
-                            'memberOf' = Get-ADDSAttributeValue -AttributeName 'memberOf' -SearchResult $searchResult
-                            'mobile' = Get-ADDSAttributeValue -AttributeName 'mobile' -SearchResult $searchResult
-                            'ms-DS-ConsistencyGuid' = Get-ADDSAttributeValue -AttributeName 'ms-DS-ConsistencyGuid' -SearchResult $searchResult
-                            'msDS-parentdistname' = Get-ADDSAttributeValue -AttributeName 'msDS-parentdistname' -SearchResult $searchResult
-                            'msDS-PrincipalName' = Get-ADDSAttributeValue -AttributeName 'msDS-PrincipalName' -SearchResult $searchResult
-                            'msExchArchiveGUID' = Get-ADDSAttributeValue -AttributeName 'msExchArchiveGUID' -SearchResult $searchResult
-                            'msExchArchiveName' = Get-ADDSAttributeValue -AttributeName 'msExchArchiveName' -SearchResult $searchResult
-                            'msExchArchiveStatus' = Get-ADDSAttributeValue -AttributeName 'msExchArchiveStatus' -SearchResult $searchResult
-                            'msExchAssistantName' = Get-ADDSAttributeValue -AttributeName 'msExchAssistantName' -SearchResult $searchResult
-                            'msExchBypassModerationLink' = Get-ADDSAttributeValue -AttributeName 'msExchBypassModerationLink' -SearchResult $searchResult
-                            'msExchEnableModeration' = Get-ADDSAttributeValue -AttributeName 'msExchEnableModeration' -SearchResult $searchResult
-                            'msExchHideFromAddressLists' = Get-ADDSAttributeValue -AttributeName 'msExchHideFromAddressLists' -SearchResult $searchResult
-                            'msExchHomeServerName' = Get-ADDSAttributeValue -AttributeName 'msExchHomeServerName' -SearchResult $searchResult
-                            'msExchLitigationHoldDate' = Get-ADDSAttributeValue -AttributeName 'msExchLitigationHoldDate' -SearchResult $searchResult
-                            'msExchLitigationHoldOwner' = Get-ADDSAttributeValue -AttributeName 'msExchLitigationHoldOwner' -SearchResult $searchResult
-                            'msExchMailboxGuid' = Get-ADDSAttributeValue -AttributeName 'msExchMailboxGuid' -SearchResult $searchResult
-                            'msExchMasterAccountSid' = Get-ADDSAttributeValue -AttributeName 'msExchMasterAccountSid' -SearchResult $searchResult
-                            'msExchOriginatingForest' = Get-ADDSAttributeValue -AttributeName 'msExchOriginatingForest' -SearchResult $searchResult
-                            'msExchPoliciesExcluded' = Get-ADDSAttributeValue -AttributeName 'msExchPoliciesExcluded' -SearchResult $searchResult
-                            'msExchPoliciesIncluded' = Get-ADDSAttributeValue -AttributeName 'msExchPoliciesIncluded' -SearchResult $searchResult
-                            'msExchRecipientDisplayType' = Get-ADDSAttributeValue -AttributeName 'msExchRecipientDisplayType' -SearchResult $searchResult
-                            'msExchRecipientTypeDetails' = Get-ADDSAttributeValue -AttributeName 'msExchRecipientTypeDetails' -SearchResult $searchResult
-                            'msExchRemoteRecipientType' = Get-ADDSAttributeValue -AttributeName 'msExchRemoteRecipientType' -SearchResult $searchResult
-                            'msExchResourceCapacity' = Get-ADDSAttributeValue -AttributeName 'msExchResourceCapacity' -SearchResult $searchResult
-                            'msExchResourceDisplay' = Get-ADDSAttributeValue -AttributeName 'msExchResourceDisplay' -SearchResult $searchResult
-                            'msExchResourceMetaData' = Get-ADDSAttributeValue -AttributeName 'msExchResourceMetaData' -SearchResult $searchResult
-                            'msExchResourceSearchProperties' = Get-ADDSAttributeValue -AttributeName 'msExchResourceSearchProperties' -SearchResult $searchResult
-                            'msExchShadowProxyAddresses' = Get-ADDSAttributeValue -AttributeName 'msExchShadowProxyAddresses' -SearchResult $searchResult
-                            'msExchUsageLocation' = Get-ADDSAttributeValue -AttributeName 'msExchUsageLocation' -SearchResult $searchResult
-                            'msExchVersion' = Get-ADDSAttributeValue -AttributeName 'msExchVersion' -SearchResult $searchResult
-                            'msExchWhenMailboxCreated' = Get-ADDSAttributeValue -AttributeName 'msExchWhenMailboxCreated' -SearchResult $searchResult
-                            'msNPAllowDialin' = Get-ADDSAttributeValue -AttributeName 'msNPAllowDialin' -SearchResult $searchResult
-                            'msRTCSIP-FederationEnabled' = Get-ADDSAttributeValue -AttributeName 'msRTCSIP-FederationEnabled' -SearchResult $searchResult
-                            'msRTCSIP-PrimaryHomeServer' = Get-ADDSAttributeValue -AttributeName 'msRTCSIP-PrimaryHomeServer' -SearchResult $searchResult
-                            'msRTCSIP-PrimaryUserAddress' = Get-ADDSAttributeValue -AttributeName 'msRTCSIP-PrimaryUserAddress' -SearchResult $searchResult
-                            'msRTCSIP-UserEnabled' = Get-ADDSAttributeValue -AttributeName 'msRTCSIP-UserEnabled' -SearchResult $searchResult
-                            'msSFU30NisDomain' = Get-ADDSAttributeValue -AttributeName 'msSFU30NisDomain' -SearchResult $searchResult
-                            'o' = Get-ADDSAttributeValue -AttributeName 'o' -SearchResult $searchResult
-                            'objectGUID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'objectSid' = Get-ADDSAttributeValue -AttributeName 'objectSid' -SearchResult $searchResult
-                            'pager' = Get-ADDSAttributeValue -AttributeName 'pager' -SearchResult $searchResult
-                            'physicalDeliveryOfficeName' = Get-ADDSAttributeValue -AttributeName 'physicalDeliveryOfficeName' -SearchResult $searchResult
-                            'postalCode' = Get-ADDSAttributeValue -AttributeName 'postalCode' -SearchResult $searchResult
-                            'postOfficeBox' = Get-ADDSAttributeValue -AttributeName 'postOfficeBox' -SearchResult $searchResult
-                            'primaryGroupID' = Get-ADDSAttributeValue -AttributeName 'primaryGroupID' -SearchResult $searchResult
-                            'proxyAddresses' = Get-ADDSAttributeValue -AttributeName 'proxyAddresses' -SearchResult $searchResult
-                            'publicDelegates' = Get-ADDSAttributeValue -AttributeName 'publicDelegates' -SearchResult $searchResult
-                            'pwdLastSet' = Get-ADDSAttributeValue -AttributeName 'pwdLastSet' -SearchResult $searchResult
-                            'sAMAccountName' = Get-ADDSAttributeValue -AttributeName 'sAMAccountName' -SearchResult $searchResult
-                            'scriptPath' = Get-ADDSAttributeValue -AttributeName 'scriptPath' -SearchResult $searchResult
-                            'servicePrincipalName' = Get-ADDSAttributeValue -AttributeName 'servicePrincipalName' -SearchResult $searchResult
-                            'shadowExpire' = Get-ADDSAttributeValue -AttributeName 'shadowExpire' -SearchResult $searchResult
-                            'shadowFlag' = Get-ADDSAttributeValue -AttributeName 'shadowFlag' -SearchResult $searchResult
-                            'shadowInactive' = Get-ADDSAttributeValue -AttributeName 'shadowInactive' -SearchResult $searchResult
-                            'shadowLastChange' = Get-ADDSAttributeValue -AttributeName 'shadowLastChange' -SearchResult $searchResult
-                            'shadowMax' = Get-ADDSAttributeValue -AttributeName 'shadowMax' -SearchResult $searchResult
-                            'shadowMin' = Get-ADDSAttributeValue -AttributeName 'shadowMin' -SearchResult $searchResult
-                            'shadowWarning' = Get-ADDSAttributeValue -AttributeName 'shadowWarning' -SearchResult $searchResult
-                            'sIDHistory' = Get-ADDSAttributeValue -AttributeName 'sIDHistory' -SearchResult $searchResult
-                            'sn' = Get-ADDSAttributeValue -AttributeName 'sn' -SearchResult $searchResult
-                            'st' = Get-ADDSAttributeValue -AttributeName 'st' -SearchResult $searchResult
-                            'streetAddress' = Get-ADDSAttributeValue -AttributeName 'streetAddress' -SearchResult $searchResult
-                            'targetAddress' = Get-ADDSAttributeValue -AttributeName 'targetAddress' -SearchResult $searchResult
-                            'telephoneAssistant' = Get-ADDSAttributeValue -AttributeName 'telephoneAssistant' -SearchResult $searchResult
-                            'telephoneNumber' = Get-ADDSAttributeValue -AttributeName 'telephoneNumber' -SearchResult $searchResult
-                            'title' = Get-ADDSAttributeValue -AttributeName 'title' -SearchResult $searchResult
-                            'uid' = Get-ADDSAttributeValue -AttributeName 'uid' -SearchResult $searchResult
-                            'uidNumber' = Get-ADDSAttributeValue -AttributeName 'uidNumber' -SearchResult $searchResult
-                            'unixHomeDirectory' = Get-ADDSAttributeValue -AttributeName 'unixHomeDirectory' -SearchResult $searchResult
-                            'userAccountControl' = Get-ADDSAttributeValue -AttributeName 'userAccountControl' -SearchResult $searchResult
-                            'userParameters' = Get-ADDSAttributeValue -AttributeName 'userParameters' -SearchResult $searchResult
-                            'userPrincipalName' = Get-ADDSAttributeValue -AttributeName 'userPrincipalName' -SearchResult $searchResult
-                            'userWorkstations' = Get-ADDSAttributeValue -AttributeName 'userWorkstations' -SearchResult $searchResult
-                            'whenChanged' = Get-ADDSAttributeValue -AttributeName 'whenChanged' -SearchResult $searchResult
-                            'whenCreated' = Get-ADDSAttributeValue -AttributeName 'whenCreated' -SearchResult $searchResult
-                            'wwWWHomePage' = Get-ADDSAttributeValue -AttributeName 'wwWWHomePage' -SearchResult $searchResult
-                        }
+                    foreach ( $searchResult in $searchResults ) {
+                        if ( $searchResults.Count -gt 0 ) {
+                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
+                        foreach ( $searchResult in $searchResults ) {
+                            $template = [ordered] @{};
 
-                        foreach ( $jsonAttribute in $jsonAttributes ) {
-                            if ( $template.$jsonAttribute.StartsWith( '{' ) -and $template.$jsonAttribute.EndsWith( '}' ) ) {
-                                Write-Verbose -Message ( "The following attribute looks like it might have JSON data = {0}" -f $jsonAttribute );
-                                $jsonDataValues = ConvertFrom-JsonString -Value $template.$jsonAttribute;
-
-                                if ( $null -ne $jsonDataValues ) {
-                                    Write-Verbose -Message 'Building a JSON document from the attribute value'
-                                    $customPropertyName = '';
-                                    $customPropertyValue = '';
-
-                                    foreach ( $jsonDataValue in $jsonDataValues.GetEnumerator() ) {
-                                        $customPropertyName = "{0}" -f $jsonDataValue.Key;
-                                        $customPropertyValue = $jsonDataValue.Value;
-                                        Add-Member -InputObject $template -MemberType NoteProperty -Name $customPropertyName -Value $customPropertyValue -ErrorAction SilentlyContinue;
-                                    }
-                                }
+                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
+                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                                $template.Add( $attribute, $attributeValue );
                             }
+
+                            Write-Verbose -Message 'Add the current object to the results collection'
+                            [Void] $output.Add( $template );
                         }
-
-                        # Add a method to calculate the Microsoft Services ImmutableID
-                        $template | Add-Member -MemberType ScriptMethod -Name ImmutableID {
-                            Param()
-                            End {
-                                $immutableID = ConvertFrom-GuidToImmutableID -Value $this.objectGUID;
-                                Write-Verbose -Message ( "`$immutableID = {0}" -f $immutableID );
-                                return $immutableID;
-                            } # end End
-                        } -Force;
-
-                        # Add a method to calculate if the account is enabled
-                        $template | Add-Member -MemberType ScriptMethod -Name IsDisabled {
-                            Param()
-                            End {
-                                if ( $this.userAccountControl -band 2 ) {
-                                    return $true;
-                                } else {
-                                    return $false;
-                                }
-                            } # end End
-                        } -Force;
+                    }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
@@ -3048,7 +2737,7 @@ function Set-ADDSAttribute {
                                                 # } else {
                                                 #     [DateTime] $dateTime = Get-Date -Date $attributeValue;
 
-                                                #     $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $AttributeName )[ 0 ] ).ToString();
+                                                #     $iADSLargInteger = [DateTime]::FromFileTime( $SearchResult.Properties.Item( $Name )[ 0 ] ).ToString();
                                                 # }
                                             } else {
                                                 try {
@@ -3163,7 +2852,7 @@ function Set-ADDSAttribute {
     Version: 1.0.0
 .EXAMPLE
     $testUser = Get-ADDSUser -Identity 'testuser';
-    Set-ADDSJsonAttribute -DistinguishedName $testUser.distinguishedName -AttributeName 'adminDescription' -JsonName 'Test' -JsonValue 'Data';
+    Set-ADDSJsonAttribute -DistinguishedName $testUser.distinguishedName -Name 'adminDescription' -JsonName 'Test' -JsonValue 'Data';
 
     The preceding example searches for a user called 'testuser' on the Domain Controller named 'DC1' using 
     the credentials stored in $creds. Once that object is returned, a new Json data value is added in the
@@ -3172,7 +2861,7 @@ function Set-ADDSAttribute {
     $creds = Get-Credential;
     $dc = 'DC1';
     $testUser = Get-ADDSUser -Identity 'testuser' -Server $dc -Credential $creds;
-    Set-ADDSJsonAttribute -DistinguishedName $testUser.distinguishedName -Server $dc -Credential $creds -AttributeName 'adminDescription' -JsonName 'Test' -JsonValue 'Data';
+    Set-ADDSJsonAttribute -DistinguishedName $testUser.distinguishedName -Server $dc -Credential $creds -Name 'adminDescription' -JsonName 'Test' -JsonValue 'Data';
 
     The preceding example searches for a user called 'testuser' on the Domain Controller named 'DC1' using 
     the credentials stored in $creds. Once that object is returned, a new Json data value is added in the
@@ -3187,7 +2876,7 @@ function Set-ADDSJsonAttribute {
         [Parameter(
             Position = 0,
             Mandatory = $true,
-            HelpMessage = 'Enter the desired name to look for'
+            HelpMessage = 'Enter the object distinguished name to update'
         )]
         [String] $DistinguishedName,
 
@@ -3203,7 +2892,7 @@ function Set-ADDSJsonAttribute {
             Mandatory = $true,
             HelpMessage = 'Enter the AD DS path to start the search'
         )]
-        [String] $AttributeName,
+        [String] $Name,
 
         [Parameter(
             Position = 3,
@@ -3231,7 +2920,7 @@ function Set-ADDSJsonAttribute {
         Write-Verbose -Message 'Function: Set-ADDSJsonAttribute';
         Write-Verbose -Message ( " -DistinguishedName = {0}" -f $DistinguishedName );
         Write-Verbose -Message ( " -Server = {0}" -f $Server );
-        Write-Verbose -Message ( " -AttributeName = {0}" -f $AttributeName );
+        Write-Verbose -Message ( " -Name = {0}" -f $Name );
         Write-Verbose -Message ( " -JsonName = {0}" -f $JsonName );
         Write-Verbose -Message ( " -JsonValue = {0}" -f $JsonValue );
 
@@ -3257,8 +2946,8 @@ function Set-ADDSJsonAttribute {
 
                 if ( $null -ne $de.distinguishedName ) {
                     Write-Verbose -Message 'An object was found at the specified path';
-                    if ( $de.Properties.Contains( $AttributeName ) ) {
-                        $currentAttributeValue = $de.Properties.$AttributeName[ 0 ];
+                    if ( $de.Properties.Contains( $Name ) ) {
+                        $currentAttributeValue = $de.Properties.$Name[ 0 ];
                         Write-Verbose -Message ( "`$currentAttributeValue = {0}" -f $currentAttributeValue );
                     }
 
@@ -3288,7 +2977,7 @@ function Set-ADDSJsonAttribute {
                     }
 
                     try {
-                        $de.psbase.InvokeSet( $AttributeName, $jsonDataString );
+                        $de.psbase.InvokeSet( $Name, $jsonDataString );
                         $de.CommitChanges();
                     }
                     catch {
@@ -3585,39 +3274,37 @@ function Get-ADLDSUserProxyFull {
                     foreach ( $searchResult in $searchResults )
                     {
                         [Object] $template = [pscustomobject][ordered] @{
-                            '_bcObjectType' = 'adLDSUser'
-                            '_bcID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'canonicalName' = Get-ADDSAttributeValue -AttributeName 'canonicalName' -SearchResult $searchResult
-                            'cn' = Get-ADDSAttributeValue -AttributeName 'cn' -SearchResult $searchResult
-                            'company' = Get-ADDSAttributeValue -AttributeName 'company' -SearchResult $searchResult
-                            'department' = Get-ADDSAttributeValue -AttributeName 'department' -SearchResult $searchResult
-                            'description' = Get-ADDSAttributeValue -AttributeName 'description' -SearchResult $searchResult
-                            'directReports' = Get-ADDSAttributeValue -AttributeName 'directReports' -SearchResult $searchResult
-                            'displayName' = Get-ADDSAttributeValue -AttributeName 'displayName' -SearchResult $searchResult
-                            'distinguishedName' = Get-ADDSAttributeValue -AttributeName 'distinguishedName' -SearchResult $searchResult
-                            'givenName' = Get-ADDSAttributeValue -AttributeName 'givenName' -SearchResult $searchResult
-                            'l' = Get-ADDSAttributeValue -AttributeName 'l' -SearchResult $searchResult
-                            'lastLogonTimestamp' = Get-ADDSAttributeValue -AttributeName 'lastLogonTimestamp' -SearchResult $searchResult
-                            'mail' = Get-ADDSAttributeValue -AttributeName 'mail' -SearchResult $searchResult
-                            'manager' = Get-ADDSAttributeValue -AttributeName 'manager' -SearchResult $searchResult
-                            'memberOf' = Get-ADDSAttributeValue -AttributeName 'memberOf' -SearchResult $searchResult
-                            'mobile' = Get-ADDSAttributeValue -AttributeName 'mobile' -SearchResult $searchResult
-                            'msDS-PrincipalName' = Get-ADDSAttributeValue -AttributeName 'msDS-PrincipalName' -SearchResult $searchResult
-                            'objectGUID' = Get-ADDSAttributeValue -AttributeName 'objectGUID' -SearchResult $searchResult
-                            'objectSid' = Get-ADDSAttributeValue -AttributeName 'objectSid' -SearchResult $searchResult
-                            'pager' = Get-ADDSAttributeValue -AttributeName 'pager' -SearchResult $searchResult
-                            'physicalDeliveryOfficeName' = Get-ADDSAttributeValue -AttributeName 'physicalDeliveryOfficeName' -SearchResult $searchResult
-                            'postalCode' = Get-ADDSAttributeValue -AttributeName 'postalCode' -SearchResult $searchResult
-                            'postOfficeBox' = Get-ADDSAttributeValue -AttributeName 'postOfficeBox' -SearchResult $searchResult
-                            'sn' = Get-ADDSAttributeValue -AttributeName 'sn' -SearchResult $searchResult
-                            'st' = Get-ADDSAttributeValue -AttributeName 'st' -SearchResult $searchResult
-                            'streetAddress' = Get-ADDSAttributeValue -AttributeName 'streetAddress' -SearchResult $searchResult
-                            'telephoneNumber' = Get-ADDSAttributeValue -AttributeName 'telephoneNumber' -SearchResult $searchResult
-                            'title' = Get-ADDSAttributeValue -AttributeName 'title' -SearchResult $searchResult
-                            'uid' = Get-ADDSAttributeValue -AttributeName 'uid' -SearchResult $searchResult
-                            'userPrincipalName' = Get-ADDSAttributeValue -AttributeName 'userPrincipalName' -SearchResult $searchResult
-                            'whenChanged' = Get-ADDSAttributeValue -AttributeName 'whenChanged' -SearchResult $searchResult
-                            'whenCreated' = Get-ADDSAttributeValue -AttributeName 'whenCreated' -SearchResult $searchResult
+                            'canonicalName' = Get-ADDSAttributeValue -Name 'canonicalName' -SearchResult $searchResult
+                            'cn' = Get-ADDSAttributeValue -Name 'cn' -SearchResult $searchResult
+                            'company' = Get-ADDSAttributeValue -Name 'company' -SearchResult $searchResult
+                            'department' = Get-ADDSAttributeValue -Name 'department' -SearchResult $searchResult
+                            'description' = Get-ADDSAttributeValue -Name 'description' -SearchResult $searchResult
+                            'directReports' = Get-ADDSAttributeValue -Name 'directReports' -SearchResult $searchResult
+                            'displayName' = Get-ADDSAttributeValue -Name 'displayName' -SearchResult $searchResult
+                            'distinguishedName' = Get-ADDSAttributeValue -Name 'distinguishedName' -SearchResult $searchResult
+                            'givenName' = Get-ADDSAttributeValue -Name 'givenName' -SearchResult $searchResult
+                            'l' = Get-ADDSAttributeValue -Name 'l' -SearchResult $searchResult
+                            'lastLogonTimestamp' = Get-ADDSAttributeValue -Name 'lastLogonTimestamp' -SearchResult $searchResult
+                            'mail' = Get-ADDSAttributeValue -Name 'mail' -SearchResult $searchResult
+                            'manager' = Get-ADDSAttributeValue -Name 'manager' -SearchResult $searchResult
+                            'memberOf' = Get-ADDSAttributeValue -Name 'memberOf' -SearchResult $searchResult
+                            'mobile' = Get-ADDSAttributeValue -Name 'mobile' -SearchResult $searchResult
+                            'msDS-PrincipalName' = Get-ADDSAttributeValue -Name 'msDS-PrincipalName' -SearchResult $searchResult
+                            'objectGUID' = Get-ADDSAttributeValue -Name 'objectGUID' -SearchResult $searchResult
+                            'objectSid' = Get-ADDSAttributeValue -Name 'objectSid' -SearchResult $searchResult
+                            'pager' = Get-ADDSAttributeValue -Name 'pager' -SearchResult $searchResult
+                            'physicalDeliveryOfficeName' = Get-ADDSAttributeValue -Name 'physicalDeliveryOfficeName' -SearchResult $searchResult
+                            'postalCode' = Get-ADDSAttributeValue -Name 'postalCode' -SearchResult $searchResult
+                            'postOfficeBox' = Get-ADDSAttributeValue -Name 'postOfficeBox' -SearchResult $searchResult
+                            'sn' = Get-ADDSAttributeValue -Name 'sn' -SearchResult $searchResult
+                            'st' = Get-ADDSAttributeValue -Name 'st' -SearchResult $searchResult
+                            'streetAddress' = Get-ADDSAttributeValue -Name 'streetAddress' -SearchResult $searchResult
+                            'telephoneNumber' = Get-ADDSAttributeValue -Name 'telephoneNumber' -SearchResult $searchResult
+                            'title' = Get-ADDSAttributeValue -Name 'title' -SearchResult $searchResult
+                            'uid' = Get-ADDSAttributeValue -Name 'uid' -SearchResult $searchResult
+                            'userPrincipalName' = Get-ADDSAttributeValue -Name 'userPrincipalName' -SearchResult $searchResult
+                            'whenChanged' = Get-ADDSAttributeValue -Name 'whenChanged' -SearchResult $searchResult
+                            'whenCreated' = Get-ADDSAttributeValue -Name 'whenCreated' -SearchResult $searchResult
                         }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
@@ -4411,15 +4098,15 @@ function Get-IniFile {
 function Get-LDAPAttributeValue {
     Param
     (
-        [String] $AttributeName,
+        [String] $Name,
 
         [Object] $SearchResult
     )
 
-    if ( $SearchResult.Properties.Contains( $AttributeName ) ) {
+    if ( $SearchResult.Properties.Contains( $Name ) ) {
         $stringCollection = [Collections.ArrayList] @();
 
-        foreach ( $stringValue in $SearchResult.Properties.Item( $AttributeName ) ) {
+        foreach ( $stringValue in $SearchResult.Properties.Item( $Name ) ) {
             [Void] $stringCollection.Add( $stringValue );
         }
 
@@ -4432,7 +4119,7 @@ function Get-LDAPAttributeValue {
 
     #----------------------------------------------------------------------------------------------------------
     trap {
-        Write-Warning -Message ( "ERROR: AttributeName={0}, Object={1}, Message={2}" -f $AttributeName, $SearchResult.Path, $_.Exception.Message );
+        Write-Warning -Message ( "ERROR: AttributeName={0}, Object={1}, Message={2}" -f $Name, $SearchResult.Path, $_.Exception.Message );
         Continue;
     }
     #----------------------------------------------------------------------------------------------------------
@@ -4576,7 +4263,7 @@ function Get-LDAPObject {
 
                         foreach ( $ldapAttribute in $searchResult.Properties.PropertyNames ) {
                             $attributeValue = $null;
-                            $attributeValue = Get-LDAPAttributeValue -AttributeName $ldapAttribute -SearchResult $searchResult;
+                            $attributeValue = Get-LDAPAttributeValue -Name $ldapAttribute -SearchResult $searchResult;
                             $template | Add-Member -MemberType NoteProperty -Name $ldapAttribute -Value $attributeValue;
                         }
 
@@ -5558,6 +5245,32 @@ function Test-IsUACEnabled {
 }
 
 #endregion
+
+# Validate cache folder
+$Global:cacheFolder = "{0}\PSUtils" -f $env:APPDATA;
+$Global:PSUtilsConfigFile = "{0}\PSUtils.config" -f $Global:cacheFolder;
+
+if ( ( Test-Path -Path $cacheFolder ) -eq $false ) {
+    New-Item -Path $cacheFolder -ItemType Directory;
+}
+
+if ( Test-Path -Path $Global:PSUtilsConfigFile ) {
+    $Global:PSUtilsSettings = Import-Json -Path $Global:PSUtilsConfigFile;
+} else {
+    [Object] $Global:PSUtilsSettings = [pscustomobject][ordered] @{
+        AttributeDataTypes = $Global:attributeDataTypes
+        ComputerAttributes = $Global:computerAttributes
+        ContactAttributes = $Global:contactAttributes
+        ForeignSecurityPrincipalAttributes = $Global:foreignSecurityPrincipalAttibutes
+        GroupAttributes = $Global:groupAttributes
+        OUAttributes = $Global:ouAttributes
+        PrintQueueAttributes = $Global:printQueueAttributes
+        ServiceConnectionPointAttributes = $Global:serviceConnectionPointAttributes
+        UserAttributes = $Global:userAttributes
+    }
+
+    $Global:PSUtilsSettings | Export-Json -Path $Global:PSUtilsConfigFile -Depth 4;
+}
 
 # Export all the defined cmdlets for use
 Export-ModuleMember -Function '*';

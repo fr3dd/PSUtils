@@ -277,7 +277,6 @@ $Global:contactAttributes = [Collections.ArrayList] @(
     'extensionAttribute9',
     'facsimileTelephoneNumber',
     'givenName',
-    'ImmutableId',
     'info',
     'initials',
     'l',
@@ -373,7 +372,6 @@ $Global:groupAttributes = [Collections.ArrayList] @(
     'distinguishedName',
     'gidNumber',
     'groupType',
-    'ImmutableId',
     'info',
     'legacyExchangeDN',
     'mail',
@@ -525,7 +523,6 @@ $Global:userAttributes = [Collections.ArrayList] @(
     'homeDirectory',
     'homeDrive',
     'homeMDB',
-    'ImmutableId',
     'info',
     'initials',
     'l',
@@ -1747,20 +1744,12 @@ function Get-ADDSContact {
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
                         $progressCounter++;
 
-                        if ( $searchResults.Count -gt 0 ) {
-                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
-                        foreach ( $searchResult in $searchResults ) {
-                            $template = [ordered] @{};
+                        $template = [ordered] @{};
 
-                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
-                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
-                                $template.Add( $attribute, $attributeValue );
-                            }
-
-                            Write-Verbose -Message 'Add the current object to the results collection'
-                            [Void] $output.Add( $template );
+                        foreach ( $attribute in $Global:PSUtilsSettings.ContactAttributes ) {
+                            $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                            $template.Add( $attribute, $attributeValue );
                         }
-                    }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
@@ -1906,20 +1895,12 @@ function Get-ADDSForeignSecurityPrincipal {
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
                         $progressCounter++;
 
-                        if ( $searchResults.Count -gt 0 ) {
-                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
-                        foreach ( $searchResult in $searchResults ) {
-                            $template = [ordered] @{};
+                        $template = [ordered] @{};
 
-                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
-                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
-                                $template.Add( $attribute, $attributeValue );
-                            }
-
-                            Write-Verbose -Message 'Add the current object to the results collection'
-                            [Void] $output.Add( $template );
+                        foreach ( $attribute in $Global:PSUtilsSettings.ForeignSecurityPrincipalAttributes ) {
+                            $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                            $template.Add( $attribute, $attributeValue );
                         }
-                    }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
@@ -1932,7 +1913,7 @@ function Get-ADDSForeignSecurityPrincipal {
         } catch {  } # Throw away the error because it is false anyway
 
         return $output;
-    }   
+    }
 }
 
 <#
@@ -2093,20 +2074,13 @@ function Get-ADDSGroup {
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
                         $progressCounter++;
 
-                        if ( $searchResults.Count -gt 0 ) {
-                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
-                        foreach ( $searchResult in $searchResults ) {
-                            $template = [ordered] @{};
+                        $template = [ordered] @{};
 
-                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
-                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
-                                $template.Add( $attribute, $attributeValue );
-                            }
-
-                            Write-Verbose -Message 'Add the current object to the results collection'
-                            [Void] $output.Add( $template );
+                        foreach ( $attribute in $Global:PSUtilsSettings.GroupAttributes ) {
+                            $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                            $template.Add( $attribute, $attributeValue );
                         }
-                    }
+
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
                     }
@@ -2278,21 +2252,13 @@ function Get-ADDSUser {
                         $progressStatus = $searchResult.Path;
                         Write-Progress -Activity $activityMessage -Status $progressStatus -CurrentOperation $progressOperation -PercentComplete $progressPercentage -ErrorAction SilentlyContinue;
                         $progressCounter++;
-                        
-                        if ( $searchResults.Count -gt 0 ) {
-                        Write-Verbose -Message ( "`$searchResults.Count = {0}" -f $searchResults.Count );
-                        foreach ( $searchResult in $searchResults ) {
-                            $template = [ordered] @{};
 
-                            foreach ( $attribute in $Global:PSUtilsSettings.ComputerAttributes ) {
-                                $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
-                                $template.Add( $attribute, $attributeValue );
-                            }
+                        $template = [ordered] @{};
 
-                            Write-Verbose -Message 'Add the current object to the results collection'
-                            [Void] $output.Add( $template );
+                        foreach ( $attribute in $Global:PSUtilsSettings.UserAttributes ) {
+                            $attributeValue = Get-ADDSAttributeValue -Name $attribute -SearchResult $searchResult;
+                            $template.Add( $attribute, $attributeValue );
                         }
-                    }
 
                         Write-Verbose -Message 'Add the current object to the results collection'
                         [Void] $output.Add( $template );
